@@ -1,0 +1,17 @@
+/* 웹프로그래밍 10팀 */
+* {
+	margin: 0;
+	padding: 0;
+}
+body {
+	font-family: serif;
+}
+li {
+	list-style: none;
+}
+a {
+	text-decoration: none;
+}
+img {
+	border: 0;
+}
