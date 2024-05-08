@@ -1,17 +1,142 @@
 /* 웹프로그래밍 10팀 */
+:root {
+  --default-theme-backgournd-color: #71929d;
+  --default-theme-line-color: #39474e;
+}
 * {
-	margin: 0;
-	padding: 0;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 body {
-	font-family: serif;
+  font-family: "Source Code Pro", monospace, serif;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 li {
-	list-style: none;
+  list-style: none;
 }
 a {
-	text-decoration: none;
+  text-decoration: none;
 }
 img {
-	border: 0;
+  border: 0;
+}
+
+#main-header {
+  border: 1px solid var(--default-theme-line-color);
+  border-bottom: none;
+  border-radius: 10px 10px 0 0;
+
+  padding: 5px 10px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  span {
+    font-size: 14px;
+  }
+  h5 {
+    font-size: 14px;
+    font-weight: bold;
+  }
+}
+#main-header .btn-container {
+  display: flex;
+  gap: 5px;
+
+  .header-btn {
+    text-align: center;
+    width: 15px;
+    height: 15px;
+    line-height: 15px;
+    border-radius: 100%;
+    color: brown;
+  }
+  .header-btn:first-child {
+    background-color: rgb(255, 112, 112);
+  }
+  .header-btn:nth-child(2) {
+    background-color: #fabf52;
+  }
+  .header-btn:last-child {
+    background-color: rgb(107, 255, 139);
+    color: gray;
+  }
+}
+
+#content {
+  height: calc(100vh - 51px);
+  background: #233239;
+  border-left: 1px solid var(--default-theme-line-color);
+  border-right: 1px solid var(--default-theme-line-color);
+
+  position: relative;
+
+  display: flex;
+  justify-content: space-between;
+}
+
+#content #side-menu {
+  padding: 10px;
+  width: 250px; /* 사이드 메뉴 고정 너비 */
+  border-right: 0.5px solid var(--default-theme-line-color);
+}
+#content div {
+  width: 100%; /* 게임 시작시 너비 */
+
+	#file-bar {
+		padding: 0 20px;
+		height: 50px;
+		line-height: 50px;
+
+		.chevron-container {
+			height: 100%;
+			display: flex;
+			align-items: center;
+			gap: 15px;
+
+			.chevron {
+				width: 15px;
+				height: 15px;
+			}
+		}
+	}
+}
+
+#code-area {
+	position: relative;
+}
+#code-area #code-line-num {
+	width: 60px;
+	height: 15px;
+	line-height: 15px;
+	text-align: center;
+	color: #98a1ab;
+	background-color: #1d2a30;
+
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+footer {
+  border: 1px solid var(--default-theme-line-color);
+  border-radius: 0 0 10px 10px;
+
+  width: 100%;
+  background: #233239;
+  padding: 5px 10px;
+  font-size: 10px;
+  line-height: 10px;
+  color: var(--default-theme-backgournd-color);
+
+  display: flex;
+  justify-content: space-between;
+
+  div {
+    display: flex;
+    gap: 20px;
+  }
 }
