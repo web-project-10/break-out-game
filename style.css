@@ -102,33 +102,30 @@ input::placeholder {
   width: 300px; /* 사이드 메뉴 고정 너비 */
   border-right: 0.5px solid var(--default-theme-line-color);
 }
-#content div {
+#content #code-container {
   width: 100%; /* 게임 시작시 너비 */
+  display: flex;
+}
 
-  #file-bar {
-    padding: 0 20px;
-    height: 50px;
-    line-height: 50px;
+#code-container #file-bar {
+  width: 60px;
+  padding: 0 20px;
+  height: 50px;
+  line-height: 50px;
 
-    .chevron-container {
-      height: 100%;
-      display: flex;
-      align-items: center;
-      gap: 15px;
+  .chevron-container {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    gap: 15px;
 
-      .chevron {
-        width: 15px;
-        height: 15px;
-      }
+    .chevron {
+      width: 15px;
+      height: 15px;
     }
   }
 }
-
-#code-area {
-  display: flex;
-  height: calc(100% - 50px);
-}
-#code-area #code-line-num {
+#code-container #code-line-num {
   width: 60px;
   height: 15px;
   line-height: 15px;
@@ -138,8 +135,9 @@ input::placeholder {
 }
 
 #game-area {
-  width: calc(100% - 60.5px);
   height: 100%;
+  width: calc(100% - 60.5px);
+  display: flex;
   position: relative;
 }
 #user-setting {
