@@ -23,6 +23,10 @@ function selectSetting() {
         "background-color": "#71929d",
         color: "white",
       });
+
+      $(this).attr("id") == "square-ball"
+        ? changeBallShape("square")
+        : changeBallShape("circle");
     } else {
       $label.css({
         "background-color": "#fff",
@@ -47,6 +51,11 @@ function completeSetting() {
   */
 }
 
+const BallShape = {
+  CIRCLE: "circle",
+  SQUARE: "square",
+};
+let ballShape = BallShape.CIRCLE;
 function displayBallSetting() {
   const canvas = document.getElementById("game-canvas");
 
@@ -56,40 +65,48 @@ function displayBallSetting() {
   canvas.width = canvasWidth;
   canvas.height = canvasHeight;
 
-  const context = canvas.getContext("2d");
-
-  const ballRadius = 3;
-  let x = Math.floor(
-    Math.random() * (canvasWidth - ballRadius * 2) + ballRadius
-  );
+  const circleRadius = 3;
+  const rectWidth = circleRadius * 2;
+  let x = Math.floor(Math.random() * (canvasWidth - rectWidth * 2) + rectWidth);
   let y = Math.floor(
-    Math.random() * (canvasHeight - ballRadius * 2) + ballRadius
+    Math.random() * (canvasHeight - rectWidth * 2) + rectWidth
   );
   const direct = [1, -1];
   let dx = 0.3 * direct[Math.floor(Math.random() * 2)];
   let dy = 0.3 * direct[Math.floor(Math.random() * 2)];
-  const ball = setInterval(draw, 1);
+
+  let ball = setInterval(function () {
+    draw();
+  }, 1);
+
+  const context = canvas.getContext("2d");
 
   function draw() {
-    context.clearRect(0, 0, canvasWidth, canvasHeight);
-
     drawBall();
 
-    if (x < 0 + ballRadius || x > canvasWidth - ballRadius) {
+    if (x < 0 + circleRadius || x > canvasWidth - circleRadius) {
       dx *= -1;
     }
-    if (y < 0 + ballRadius || y > canvasHeight - ballRadius) {
+    if (y < 0 + circleRadius || y > canvasHeight - circleRadius) {
       dy *= -1;
     }
 
     x += dx;
     y += dy;
-  }
 
-  function drawBall() {
-    context.beginPath();
-    context.arc(x, y, ballRadius, 0, 2.0 * Math.PI, true);
-    context.fillStyle = "#71929d";
-    context.fill();
+    function drawBall() {
+      context.clearRect(0, 0, canvasWidth, canvasHeight);
+      context.beginPath();
+
+      ballShape == BallShape.CIRCLE
+        ? context.arc(x, y, circleRadius, 0, 2.0 * Math.PI, true)
+        : context.rect(x, y, rectWidth, rectWidth);
+      context.fillStyle = "#71929d";
+      context.fill();
+    }
   }
+}
+
+function changeBallShape(shape) {
+  ballShape = shape == "circle" ? BallShape.CIRCLE : BallShape.SQUARE;
 }
