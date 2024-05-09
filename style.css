@@ -1,15 +1,15 @@
 /* 웹프로그래밍 10팀 */
 :root {
-  --default-theme-backgournd-color: #71929d;
+  --default-theme-background-color: #71929d;
   --default-theme-line-color: #39474e;
 }
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  font-family: "Source Code Pro", monospace, Orbit, serif;
 }
 body {
-  font-family: "Source Code Pro", monospace, serif;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -22,6 +22,22 @@ a {
 }
 img {
   border: 0;
+}
+input,
+input:focus {
+  border: 0;
+  outline: none;
+  text-align: center;
+}
+button {
+  border: 0;
+}
+label.setting-btn:hover,
+#to-next-btn:hover {
+  cursor: pointer;
+}
+input::placeholder {
+  color: gray;
 }
 
 #main-header {
@@ -86,39 +102,128 @@ img {
 #content div {
   width: 100%; /* 게임 시작시 너비 */
 
-	#file-bar {
-		padding: 0 20px;
-		height: 50px;
-		line-height: 50px;
+  #file-bar {
+    padding: 0 20px;
+    height: 50px;
+    line-height: 50px;
 
-		.chevron-container {
-			height: 100%;
-			display: flex;
-			align-items: center;
-			gap: 15px;
+    .chevron-container {
+      height: 100%;
+      display: flex;
+      align-items: center;
+      gap: 15px;
 
-			.chevron {
-				width: 15px;
-				height: 15px;
-			}
-		}
-	}
+      .chevron {
+        width: 15px;
+        height: 15px;
+      }
+    }
+  }
 }
 
 #code-area {
-	position: relative;
+  position: relative;
+  height: calc(100% - 50px);
 }
 #code-area #code-line-num {
-	width: 60px;
-	height: 15px;
-	line-height: 15px;
-	text-align: center;
-	color: #98a1ab;
-	background-color: #1d2a30;
+  width: 60px;
+  height: 15px;
+  line-height: 15px;
+  text-align: center;
+  color: #98a1ab;
+  background-color: #1d2a30;
 
-	position: absolute;
-	top: 0;
-	left: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+#game-area {
+  height: 100%;
+  position: relative;
+  padding-left: 60px;
+}
+#user-setting {
+  position: absolute;
+  padding: 0 100px;
+
+  /* position absolute일 때 부모 요소의 중앙에 위치 */
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+
+  width: 550px;
+  height: 500px;
+  border-radius: 20px;
+  box-shadow: 0 0 15px 15px rgb(114, 146, 157, 0.15);
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+
+  .setting-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+  }
+  .player-name-container {
+    gap: 3px;
+  }
+
+  span {
+    color: #fff;
+  }
+  .player-name-title {
+    width: 100%;
+    text-align: left;
+    font-size: 14px;
+  }
+  .setting-title {
+    font-size: 21px;
+  }
+
+  input.setting-select-input {
+    display: none;
+  }
+}
+
+#user-setting #player-name {
+  height: 40px;
+  width: 100%;
+  padding: 0 10px;
+  border-radius: 10px;
+  color: var(--default-theme-line-color);
+}
+.setting-container .btn-container {
+  display: flex;
+
+  .setting-btn {
+    font-size: 14px;
+    width: 85px;
+    height: 38px;
+    border-radius: 10px;
+    line-height: 38px;
+    text-align: center;
+    background: #fff;
+  }
+}
+.theme-container .btn-container {
+  justify-content: space-between;
+}
+.ball-shape-container .btn-container {
+  justify-content: space-evenly;
+}
+#user-setting #to-next-btn {
+  width: 70px;
+  height: 40px;
+  border-radius: 8px;
+  background-color: var(--default-theme-background-color);
+  color: #fff;
 }
 
 footer {
@@ -130,7 +235,7 @@ footer {
   padding: 5px 10px;
   font-size: 10px;
   line-height: 10px;
-  color: var(--default-theme-backgournd-color);
+  color: var(--default-theme-background-color);
 
   display: flex;
   justify-content: space-between;

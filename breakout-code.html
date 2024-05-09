@@ -4,7 +4,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Orbit&family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="./style.css" />
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="./breakout.js"></script>
@@ -22,30 +25,104 @@
     </header>
 
     <section id="content">
-			<aside id="side-menu"></aside>
-			<div>
-        <div id="file-bar"> <!-- 정해지는 방향에 따라, 게임에 맞춰 id명 수정 -->
+      <aside id="side-menu"></aside>
+      <div>
+        <div id="file-bar">
+          <!-- 정해지는 방향에 따라, 게임에 맞춰 id명 수정 -->
           <div class="chevron-container">
-            <img src="./assets/left-chevron-gray.svg" alt="left-chevron-gray" class="chevron">
-            <img src="./assets/right-chevron-gray.svg" alt="right-chevron-gray" class="chevron">
+            <img
+              src="./assets/left-chevron-gray.svg"
+              alt="left-chevron-gray"
+              class="chevron"
+            />
+            <img
+              src="./assets/right-chevron-gray.svg"
+              alt="right-chevron-gray"
+              class="chevron"
+            />
           </div>
         </div>
 
         <section id="code-area">
           <div id="code-line-num">1</div>
           <div id="game-area">
-
+            <!-- !!!! Main Game Area !!!! -->
+            <article id="user-setting">
+              <div class="setting-container player-name-container">
+                <span class="player-name-title">Player Name</span>
+                <input
+                  type="text"
+                  placeholder="Enter your name."
+                  id="player-name"
+                />
+              </div>
+              <div class="setting-container theme-container">
+                <span class="setting-title">Theme</span>
+                <div class="btn-container">
+                  <input
+                    id="default-theme"
+                    type="radio"
+                    name="theme-btn"
+                    value="Default"
+                    class="setting-select-input"
+                    checked="checked"
+                  />
+                  <label for="default-theme" class="setting-btn">Default</label>
+                  <input
+                    id="one-dark-theme"
+                    type="radio"
+                    name="theme-btn"
+                    value="One Dark"
+                    class="setting-select-input"
+                  />
+                  <label for="one-dark-theme" class="setting-btn"
+                    >One Dark</label
+                  >
+                  <input
+                    id="dracula-theme"
+                    type="radio"
+                    name="theme-btn"
+                    value="Dracula"
+                    class="setting-select-input"
+                  />
+                  <label for="dracula-theme" class="setting-btn">Dracula</label>
+                </div>
+              </div>
+              <div class="setting-container ball-shape-container">
+                <span class="setting-title">Ball Shape</span>
+                <div class="btn-container">
+                  <input
+                    id="circle-ball"
+                    type="radio"
+                    name="ball-shape-btn"
+                    value="Circle"
+                    class="setting-select-input"
+                    checked="checked"
+                  />
+                  <label for="circle-ball" class="setting-btn">Circle</label>
+                  <input
+                    id="square-ball"
+                    type="radio"
+                    name="ball-shape-btn"
+                    value="Square"
+                    class="setting-select-input"
+                  />
+                  <label for="square-ball" class="setting-btn">Square</label>
+                </div>
+              </div>
+              <button type="button" id="to-next-btn">Next</button>
+            </article>
           </div>
         </section>
       </div>
     </section>
 
-		<footer>
-			<span>Line 1, Column 1</span>
-			<div>
-				<span>Tab Size: 2</span>
-				<span>Plain Text</span>
-			</div>
-		</footer>
+    <footer>
+      <span>Line 1, Column 1</span>
+      <div>
+        <span>Tab Size: 2</span>
+        <span>Plain Text</span>
+      </div>
+    </footer>
   </body>
 </html>
