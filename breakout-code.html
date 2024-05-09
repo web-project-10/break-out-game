@@ -26,9 +26,101 @@
 
     <section id="content">
       <aside id="side-menu"></aside>
-      <div>
-        <div id="file-bar">
-          <!-- 정해지는 방향에 따라, 게임에 맞춰 id명 수정 -->
+      <div id="code-container">
+        <div>
+          <div id="file-bar">
+            <!-- 정해지는 방향에 따라, 게임에 맞춰 id명 수정 -->
+            <div class="chevron-container">
+              <img
+                src="./assets/left-chevron-gray.svg"
+                alt="left-chevron-gray"
+                class="chevron"
+              />
+              <img
+                src="./assets/right-chevron-gray.svg"
+                alt="right-chevron-gray"
+                class="chevron"
+              />
+            </div>
+          </div>
+          <div id="code-line-num">1</div>
+        </div>
+
+        <section id="game-area">
+          <!-- 사용자 게임 환경 설정창 -->
+          <article id="user-setting">
+            <div class="setting-container player-name-container">
+              <span class="player-name-title">Player Name</span>
+              <input
+                type="text"
+                placeholder="Enter your name."
+                id="player-name"
+              />
+            </div>
+            <div class="setting-container theme-container">
+              <span class="setting-title">Theme</span>
+              <div class="btn-container">
+                <input
+                  id="default-theme"
+                  type="radio"
+                  name="theme-btn"
+                  value="Default"
+                  class="setting-select-input"
+                  checked="checked"
+                />
+                <label for="default-theme" class="setting-btn">Default</label>
+                <input
+                  id="one-dark-theme"
+                  type="radio"
+                  name="theme-btn"
+                  value="One Dark"
+                  class="setting-select-input"
+                />
+                <label for="one-dark-theme" class="setting-btn"
+                  >One Dark</label
+                >
+                <input
+                  id="dracula-theme"
+                  type="radio"
+                  name="theme-btn"
+                  value="Dracula"
+                  class="setting-select-input"
+                />
+                <label for="dracula-theme" class="setting-btn">Dracula</label>
+              </div>
+            </div>
+            <div class="setting-container ball-shape-container">
+              <span class="setting-title">Ball Shape</span>
+              <div class="btn-container">
+                <input
+                  id="circle-ball"
+                  type="radio"
+                  name="ball-shape-btn"
+                  value="Circle"
+                  class="setting-select-input"
+                  checked="checked"
+                />
+                <label for="circle-ball" class="setting-btn">Circle</label>
+                <input
+                  id="square-ball"
+                  type="radio"
+                  name="ball-shape-btn"
+                  value="Square"
+                  class="setting-select-input"
+                />
+                <label for="square-ball" class="setting-btn">Square</label>
+              </div>
+            </div>
+            <button type="button" id="to-next-btn">Next</button>
+          </article>
+
+          <!-- TODO 테마 설정창 -->
+
+          <!-- !!!! Main Game Area !!!! -->
+          <!-- TODO 실제 게임 동작 구현하기 -->
+          <canvas id="game-canvas"></canvas>
+        </section>
+      </div>
           <div class="chevron-container">
             <img
               src="./assets/left-chevron-gray.svg"
@@ -46,7 +138,6 @@
         <section id="code-area">
           <div id="code-line-num">1</div>
           <div id="game-area">
-            <!-- 사용자 게임 환경 설정창 -->
             <article id="user-setting">
               <div class="setting-container player-name-container">
                 <span class="player-name-title">Player Name</span>
@@ -113,13 +204,10 @@
               <button type="button" id="to-next-btn">Next</button>
             </article>
 
-            <!-- TODO 테마 설정창 -->
-
-            <!-- !!!! Main Game Area !!!! -->
-            <!-- TODO 실제 게임 동작 구현하기 -->
+            <canvas id="game-canvas"></canvas>
           </div>
         </section>
-      </div>
+      </div> -->
     </section>
 
     <footer>
