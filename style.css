@@ -98,10 +98,56 @@ input::placeholder {
 }
 
 #content #side-menu {
-  padding: 10px;
+  padding: 15px;
   width: 300px; /* 사이드 메뉴 고정 너비 */
   border-right: 0.5px solid var(--default-theme-line-color);
 }
+#side-score-box{
+  display: none;
+}
+#side-dif-box{
+  display: none;
+}
+.side-title{
+  color: #CDD8DD;
+  padding: 10px 10px;
+  font-size: 18px;
+}
+#side-score{
+  /*display: none;*/
+  padding: 15px;
+  font-size: 30px;
+  text-align: center;
+}
+.folder{
+  /*float: left;*/
+}
+.side-txt{
+  /*float: left;*/
+  padding-left: 10px;
+}
+#setting-title{
+  display: flex;
+  height: 30px;
+  padding-left: 15px;
+  padding-top: 5px;
+  color: #56AFCE;
+}
+#setting-title p{
+  font-size: 15px;
+}
+.sub-setting{
+  display: flex;
+  padding-left: 30px;
+  padding-top: 5px;
+  color: #ACBEC5;
+}
+.sub-setting p{
+  font-size: 15px;
+}
+
+
+
 #content #code-container {
   width: 100%; /* 게임 시작시 너비 */
   display: flex;

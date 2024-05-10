@@ -44,11 +44,16 @@ function completeSetting() {
 
   /*TODO
     환경 설정 이후,
-    난이도 선택창 띄우기 및 사이드 메뉴에 사용자가 선택한 환경 설정 정보 표시하ㄱ기
+    난이도 선택창 띄우기 및 사이드 메뉴에 사용자가 선택한 환경 설정 정보 표시하기
     - 사용자 이름
     - 테마
     - 공 모양
   */
+
+    $("#side-playername").text($("#player-name").val());
+    $("#side-theme").text($(":input:radio[name=theme-btn]:checked").val());
+    $("#side-ball").text($(":input:radio[name=ball-shape-btn]:checked").val());
+
 }
 
 const BallShape = {
