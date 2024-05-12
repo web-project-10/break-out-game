@@ -114,16 +114,11 @@ input::placeholder {
   font-size: 18px;
 }
 #side-score{
-  /*display: none;*/
   padding: 15px;
   font-size: 30px;
   text-align: center;
 }
-.folder{
-  /*float: left;*/
-}
 .side-txt{
-  /*float: left;*/
   padding-left: 10px;
 }
 #setting-title{
@@ -244,6 +239,7 @@ input::placeholder {
 }
 .setting-container .btn-container {
   display: flex;
+  width: 100%;
 
   .setting-btn {
     font-size: 14px;
