@@ -35,7 +35,8 @@ button {
   border: 0;
 }
 label.setting-btn:hover,
-#to-next-btn:hover {
+#to-next-btn:hover,
+#start-btn:hover {
   cursor: pointer;
 }
 input::placeholder {
@@ -94,50 +95,46 @@ input::placeholder {
   position: relative;
 
   display: flex;
-  justify-content: space-between;
 }
 
 #content #side-menu {
   padding: 15px;
-  width: 300px; /* 사이드 메뉴 고정 너비 */
+  width: 230px; /* 사이드 메뉴 고정 너비 */
   border-right: 0.5px solid var(--default-theme-line-color);
 }
-#side-score-box{
+#side-score-box {
   display: none;
 }
-#side-dif-box{
-
-}
-.side-title{
-  color: #CDD8DD;
+.side-title {
+  color: #cdd8dd;
   padding: 10px 10px;
   font-size: 18px;
 }
-#side-score{
+#side-score {
   padding: 15px;
   font-size: 30px;
   text-align: center;
 }
-.side-txt{
+.side-txt {
   padding-left: 10px;
 }
-#setting-title{
+#setting-title {
   display: flex;
   height: 30px;
   padding-left: 15px;
   padding-top: 5px;
-  color: #56AFCE;
+  color: #56afce;
 }
-#setting-title p{
+#setting-title p {
   font-size: 15px;
 }
-.sub-setting{
+.sub-setting {
   display: flex;
   padding-left: 30px;
   padding-top: 5px;
-  color: #ACBEC5;
+  color: #acbec5;
 }
-.sub-setting p{
+.sub-setting p {
   font-size: 15px;
 }
 
@@ -179,7 +176,8 @@ input::placeholder {
   display: flex;
   position: relative;
 }
-#user-setting {
+#user-setting,
+#dif-setting {
   position: absolute;
   padding: 0 100px;
 
@@ -188,8 +186,6 @@ input::placeholder {
   top: 50%;
   transform: translate(-50%, -50%);
 
-  width: 550px;
-  height: 470px;
   border-radius: 20px;
   box-shadow: 0 0 15px 15px rgb(114, 146, 157, 0.15);
 
@@ -227,6 +223,14 @@ input::placeholder {
     display: none;
   }
 }
+#user-setting {
+  width: 550px;
+  height: 470px;
+}
+#dif-setting {
+  width: 550px;
+  height: 250px;
+}
 
 #user-setting #player-name {
   height: 40px;
@@ -249,13 +253,15 @@ input::placeholder {
     background: #fff;
   }
 }
-.theme-container .btn-container{
+.theme-container .btn-container,
+.difficulty-container .btn-container {
   justify-content: space-between;
 }
 .ball-shape-container .btn-container {
   justify-content: space-evenly;
 }
-#user-setting #to-next-btn {
+#user-setting #to-next-btn,
+#dif-setting #start-btn {
   width: 70px;
   height: 40px;
   border-radius: 8px;
@@ -263,73 +269,6 @@ input::placeholder {
   color: #fff;
 }
 
-
-#dif-setting {
-  position: absolute;
-  padding: 80px 100px;
-
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-
-  width: 800px;
-  height: 470px;
-  border-radius: 20px;
-  box-shadow: 0 0 15px 15px rgb(114, 146, 157, 0.15);
-
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 30px;
-
-  .setting-container {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-  }
-  .setting-title {
-    margin-bottom: 75px;
-  }
-
-  .player-name-container {
-    gap: 3px;
-  }
-
-  span {
-    color: #fff;
-  }
-  .setting-title {
-    font-size: 50px;
-  }
-
-  input.setting-select-input {
-    display: none;
-  }
-}
-
-.difficulty-container .btn-container{
-  .setting-btn {
-    font-size: 32px;
-    width: 150px;
-    height: 80px;
-    border-radius: 10px;
-    line-height: 80px;
-    text-align: center;
-    background: #fff;
-  }
-  justify-content: space-between;
-}
-#dif-setting #to-next-btn {
-  width: 70px;
-  height: 40px;
-  border-radius: 8px;
-  background-color: var(--default-theme-point-color);
-  color: #fff;
-}
 
 /* Main Game Area */
 #game-canvas {

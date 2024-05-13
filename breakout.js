@@ -3,95 +3,102 @@
 window.onload = pageLoad;
 
 function pageLoad() {
-  selectSetting();
+  selectSetting(SetWhat.DEFAULT_SETTING);
   displayBallSetting();
 
   //환경 설정
   $("#dif-setting").css({ display: "none" }); // 난이도 설정 창
   $("#side-menu").css({ display: "none" }); //사용자 환경 설정시 사이드 메뉴 숨김
-  $("#user-setting input.setting-select-input").change(selectSetting); //환경 설정 버튼 선택시 css style 변화
-  $("#dif-setting input.setting-select-input").change(selectSetting); //환경 설정 버튼 선택시 css style 변화
-  $("#dif-setting input.setting-select-input").change(completeSetting); //환경 설정 버튼 선택시 css style 변화
+  $("#user-setting input.setting-select-input").change(() =>
+    selectSetting(SetWhat.DEFAULT_SETTING)
+  ); //환경 설정 버튼 선택시 css style 변화
   $("#to-next-btn").on("click", completeSetting); //환경 설정 마무리
+
+  $("#dif-setting input.setting-select-input").change(() =>
+    selectSetting(SetWhat.DIFFICULTY)
+  ); //난이도 선택시 css style 변화
+  $("#start-btn").on("click", startGame); //난이도 선택 마무리, 게임 시작
 }
+
 let difficulty; // 난이도 별로 숫자로 관리. normal = 1, hard = 2, extreme = 3
+const SetWhat = {
+  DEFAULT_SETTING: "defaultSetting",
+  DIFFICULTY: "difficulty",
+};
 
-function selectSetting() {
-  $("#user-setting input.setting-select-input").each(function () {
-    const checked = $(this).prop("checked");
-    const inputId = $(this).attr("id");
-    const $label = $(`label[for=${inputId}]`);
+function selectSetting(setWhat) {
+  if (setWhat == SetWhat.DEFAULT_SETTING) {
+    $("#user-setting input.setting-select-input").each(function () {
+      const checked = $(this).prop("checked");
+      const inputId = $(this).attr("id");
+      const $label = $(`label[for=${inputId}]`);
 
-    if (checked) {
-      $label.css({
-        "background-color": "#71929d",
-        color: "white",
-      });
+      if (checked) {
+        $label.css({
+          "background-color": "#71929d",
+          color: "white",
+        });
 
-      $(this).attr("id") == "square-ball"
-        ? changeBallShape("square")
-        : changeBallShape("circle");
-    } else {
-      $label.css({
-        "background-color": "#fff",
-        color: "#000",
-      });
-    }
-  });
+        $(this).attr("id") == "square-ball"
+          ? changeBallShape("square")
+          : changeBallShape("circle");
+      } else {
+        $label.css({
+          "background-color": "#fff",
+          color: "#000",
+        });
+      }
+    });
+  } else {
+    $("#dif-setting input.setting-select-input").each(function () {
+      const checked = $(this).prop("checked");
+      const inputId = $(this).attr("id");
+      const $label = $(`label[for=${inputId}]`);
 
-  $("#dif-setting input.setting-select-input").each(function () {
-    const checked = $(this).prop("checked");
-    const inputId = $(this).attr("id");
-    const $label = $(`label[for=${inputId}]`);
+      if (checked) {
+        $label.css({
+          "background-color": "#71929d",
+          color: "white",
+        });
 
-    if (checked) {
-      $label.css({
-        "background-color": "#71929d",
-        color: "white",
-      });
-
-    switch (inputId) {
-        case "normal-dif":
-          difficulty = 1;
-          break;
-        case "hard-dif":
-          difficulty = 2;
-          break;
-        case "extreme-dif":
-          difficulty = 3;
-          break;
+        switch (inputId) {
+          case "normal-dif":
+            difficulty = 1;
+            break;
+          case "hard-dif":
+            difficulty = 2;
+            break;
+          case "extreme-dif":
+            difficulty = 3;
+            break;
         }
-        console.log("난이도 :", difficulty);
-    } else {
-      $label.css({
-        "background-color": "#fff",
-        color: "#000",
-      });
-    }
+        $("#side-dif").text(
+          $(":input:radio[name=difficulty-btn]:checked").val()
+        );
 
-  });
+        console.log("난이도 :", difficulty);
+      } else {
+        $label.css({
+          "background-color": "#fff",
+          color: "#000",
+        });
+      }
+    });
+  }
 }
 
 function completeSetting() {
   $("#user-setting").css({ display: "none" });
-  $("#dif-setting").css({ display: "block" });
   $("#side-menu").css({ display: "block" });
-  $("#code-container").css({ width: "calc(100vw - 300.5px)" });
-  $("#code-area").css({ width: "calc(100vw - 300px)" });
+  $("#dif-setting").css({ display: "flex" });
+  $("#code-container").css({ width: "calc(100vw - 230.5px)" });
+  $("#code-area").css({ width: "calc(100vw - 230px)" });
 
-  /*TODO
-    환경 설정 이후,
-    난이도 선택창 띄우기 및 사이드 메뉴에 사용자가 선택한 환경 설정 정보 표시하기
-    - 사용자 이름
-    - 테마
-    - 공 모양
-  */
+  $("#side-playername").text($("#player-name").val());
+  $("#side-theme").text($(":input:radio[name=theme-btn]:checked").val());
+  $("#side-ball").text($(":input:radio[name=ball-shape-btn]:checked").val());
 
-    $("#side-playername").text($("#player-name").val());
-    $("#side-theme").text($(":input:radio[name=theme-btn]:checked").val());
-    $("#side-ball").text($(":input:radio[name=ball-shape-btn]:checked").val());
-    $("#side-dif").text($(":input:radio[name=difficulty-btn]:checked").val());
-
+  selectSetting(SetWhat.DIFFICULTY);
 }
 
 const BallShape = {
@@ -154,4 +161,8 @@ function displayBallSetting() {
 
 function changeBallShape(shape) {
   ballShape = shape == "circle" ? BallShape.CIRCLE : BallShape.SQUARE;
+}
+
+function startGame() {
+  $("#dif-setting").css({ display: "none" });
 }
