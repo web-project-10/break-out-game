@@ -106,7 +106,7 @@ input::placeholder {
   display: none;
 }
 #side-dif-box{
-  display: none;
+
 }
 .side-title{
   color: #CDD8DD;
@@ -140,8 +140,6 @@ input::placeholder {
 .sub-setting p{
   font-size: 15px;
 }
-
-
 
 #content #code-container {
   width: 100%; /* 게임 시작시 너비 */
@@ -251,7 +249,7 @@ input::placeholder {
     background: #fff;
   }
 }
-.theme-container .btn-container {
+.theme-container .btn-container{
   justify-content: space-between;
 }
 .ball-shape-container .btn-container {
@@ -265,12 +263,79 @@ input::placeholder {
   color: #fff;
 }
 
+
+#dif-setting {
+  position: absolute;
+  padding: 80px 100px;
+
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+
+  width: 800px;
+  height: 470px;
+  border-radius: 20px;
+  box-shadow: 0 0 15px 15px rgb(114, 146, 157, 0.15);
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+
+  .setting-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+  }
+  .setting-title {
+    margin-bottom: 75px;
+  }
+
+  .player-name-container {
+    gap: 3px;
+  }
+
+  span {
+    color: #fff;
+  }
+  .setting-title {
+    font-size: 50px;
+  }
+
+  input.setting-select-input {
+    display: none;
+  }
+}
+
+.difficulty-container .btn-container{
+  .setting-btn {
+    font-size: 32px;
+    width: 150px;
+    height: 80px;
+    border-radius: 10px;
+    line-height: 80px;
+    text-align: center;
+    background: #fff;
+  }
+  justify-content: space-between;
+}
+#dif-setting #to-next-btn {
+  width: 70px;
+  height: 40px;
+  border-radius: 8px;
+  background-color: var(--default-theme-point-color);
+  color: #fff;
+}
+
 /* Main Game Area */
 #game-canvas {
   width: 100%;
   height: 100%;
 }
-
 
 footer {
   border: 1px solid var(--default-theme-line-color);

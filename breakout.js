@@ -7,10 +7,14 @@ function pageLoad() {
   displayBallSetting();
 
   //환경 설정
+  $("#dif-setting").css({ display: "none" }); // 난이도 설정 창
   $("#side-menu").css({ display: "none" }); //사용자 환경 설정시 사이드 메뉴 숨김
   $("#user-setting input.setting-select-input").change(selectSetting); //환경 설정 버튼 선택시 css style 변화
+  $("#dif-setting input.setting-select-input").change(selectSetting); //환경 설정 버튼 선택시 css style 변화
+  $("#dif-setting input.setting-select-input").change(completeSetting); //환경 설정 버튼 선택시 css style 변화
   $("#to-next-btn").on("click", completeSetting); //환경 설정 마무리
 }
+let difficulty; // 난이도 별로 숫자로 관리. normal = 1, hard = 2, extreme = 3
 
 function selectSetting() {
   $("#user-setting input.setting-select-input").each(function () {
@@ -34,10 +38,43 @@ function selectSetting() {
       });
     }
   });
+
+  $("#dif-setting input.setting-select-input").each(function () {
+    const checked = $(this).prop("checked");
+    const inputId = $(this).attr("id");
+    const $label = $(`label[for=${inputId}]`);
+
+    if (checked) {
+      $label.css({
+        "background-color": "#71929d",
+        color: "white",
+      });
+
+    switch (inputId) {
+        case "normal-dif":
+          difficulty = 1;
+          break;
+        case "hard-dif":
+          difficulty = 2;
+          break;
+        case "extreme-dif":
+          difficulty = 3;
+          break;
+        }
+        console.log("난이도 :", difficulty);
+    } else {
+      $label.css({
+        "background-color": "#fff",
+        color: "#000",
+      });
+    }
+
+  });
 }
 
 function completeSetting() {
   $("#user-setting").css({ display: "none" });
+  $("#dif-setting").css({ display: "block" });
   $("#side-menu").css({ display: "block" });
   $("#code-container").css({ width: "calc(100vw - 300.5px)" });
   $("#code-area").css({ width: "calc(100vw - 300px)" });
@@ -53,6 +90,7 @@ function completeSetting() {
     $("#side-playername").text($("#player-name").val());
     $("#side-theme").text($(":input:radio[name=theme-btn]:checked").val());
     $("#side-ball").text($(":input:radio[name=ball-shape-btn]:checked").val());
+    $("#side-dif").text($(":input:radio[name=difficulty-btn]:checked").val());
 
 }
 
@@ -61,6 +99,7 @@ const BallShape = {
   SQUARE: "square",
 };
 let ballShape = BallShape.CIRCLE;
+
 function displayBallSetting() {
   const canvas = document.getElementById("game-canvas");
 
@@ -72,13 +111,14 @@ function displayBallSetting() {
 
   const circleRadius = 3;
   const rectWidth = circleRadius * 2;
+
   let x = Math.floor(Math.random() * (canvasWidth - rectWidth * 2) + rectWidth);
   let y = Math.floor(
     Math.random() * (canvasHeight - rectWidth * 2) + rectWidth
   );
   const direct = [1, -1];
-  let dx = 0.3 * direct[Math.floor(Math.random() * 2)];
-  let dy = 0.3 * direct[Math.floor(Math.random() * 2)];
+  let dx = 0.3 * difficulty * direct[Math.floor(Math.random() * 2)];
+  let dy = 0.3 * difficulty * direct[Math.floor(Math.random() * 2)];
 
   let ball = setInterval(function () {
     draw();
