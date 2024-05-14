@@ -3,9 +3,9 @@
 window.onload = pageLoad;
 
 function pageLoad() {
-  selectSetting(SetWhat.DEFAULT_SETTING);
+  selectSetting();
   displayBallSetting();
-
+  selectSetting(SetWhat.DEFAULT_SETTING);
   //환경 설정
   $("#dif-setting").css({ display: "none" }); // 난이도 설정 창
   $("#side-menu").css({ display: "none" }); //사용자 환경 설정시 사이드 메뉴 숨김
