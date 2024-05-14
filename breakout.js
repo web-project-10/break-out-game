@@ -165,4 +165,5 @@ function changeBallShape(shape) {
 
 function startGame() {
   $("#dif-setting").css({ display: "none" });
+  $("#side-score-box").css({display: "block" });
 }
