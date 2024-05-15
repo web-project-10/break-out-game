@@ -85,6 +85,50 @@ function selectSetting(setWhat) {
       }
     });
   }
+
+  // 테마 변경 시 배경색 조정
+  $(function() {
+    const themeStyles = {
+      "Default": {
+        "backgroundColor": "#233239",
+        "elements": {
+          "#code-line-num": { "background-color": "#1D2A30", "color": "#98A1AB" },
+          ".side-txt, .side-title, #side-score": { "color": "#98A1AB" },
+          "#side-setting": { "color": "#56AFCE" }
+        }
+      },
+      "Butterfly": {
+        "backgroundColor": "#FFFFFF",
+        "elements": {
+         "#user-setting, #dif-setting": { "background-color": "#233239" },
+          "#code-line-num": { "background-color": "#EAF0F8", "color": "#434343" },
+          ".side-txt, .side-title, #side-score": { "color": "#434343" },
+          "#side-setting": { "color": "#56AFCE" }
+        }
+      },
+      "Dracula": {
+        "backgroundColor": "#282A36",
+        "elements": {
+         "#user-setting, #dif-setting": { "background-color": "#233239" },
+          "#code-line-num": { "background-color": "#3A3933", "color": "#C7C5D6" },
+          ".side-txt, .side-title, #side-score": { "color": "#C7C5D6" },
+          "#side-setting": { "color": "#56AFCE" }
+        }
+      }
+    };
+
+  $("input[name=theme-btn]").change(function () {
+    const theme = $(this).val();
+    const { backgroundColor, elements } = themeStyles[theme];
+
+    $("#content").css("background-color", backgroundColor);
+
+    for (const selector in elements) {
+      $(selector).css(elements[selector]);
+    }
+  });
+});
+
 }
 
 function completeSetting() {
