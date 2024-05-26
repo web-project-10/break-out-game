@@ -9,6 +9,7 @@ function pageLoad() {
   //환경 설정
   $("#dif-setting").css({ display: "none" }); // 난이도 설정 창
   $("#side-menu").css({ display: "none" }); //사용자 환경 설정시 사이드 메뉴 숨김
+  $("#count").css({ display: "none" }); //사용자 환경 설정시 stage, lives 숨김
   $("#user-setting input.setting-select-input").change(() =>
     selectSetting(SetWhat.DEFAULT_SETTING)
   ); //환경 설정 버튼 선택시 css style 변화
@@ -234,6 +235,7 @@ const scoreStandard = {
 function startGame() {
   $("#dif-setting").css({ display: "none" });
   $("#side-score-box").css({ display: "block" });
+  $("#count").css({ display: "flex" });
   clearInterval(ball);
 }
 
@@ -288,7 +290,7 @@ function playGame() {
     drawBrick();
     collisionCheck();
     drawPaddle();
-    drawLives();
+    updateLives();
     updateStage();
 
     if (x < circleRadius || x > canvasWidth - circleRadius) {
@@ -297,21 +299,23 @@ function playGame() {
     if (y < circleRadius) {
       dy *= -1;
     } else if (y > canvasHeight - 20 - circleRadius) {
-        if (x > paddleX && x < paddleX + paddleWidth) {
-          dy *= -1;
+      if (x > paddleX && x < paddleX + paddleWidth) {
+        dy *= -1;
+      } else {
+        //TODO 목숨 하나 잃었다는 알림 띄우고 다시 공 출발할 떄까지 2~3초 텀 두기
+        lives--;
+        if (!lives) {
+          stageTransition("Game Over!!", true);
         } else {
-          //TODO 목숨 하나 잃었다는 알림 띄우고 다시 공 출발할 떄까지 2~3초 텀 두기
-          lives--;
-            if (!lives) {
-              //TODO Game Over도 alert가 아니라, 게임 자체 창으로 띄우기
-              stageTransition("Game Over!!", true);
-            } else {
-              if ((stage == 1) && (lives == 4)) {
-              } else {
-                stageTransition("Start Again!!", false);
-              }
-            }
+          if (lives == 3) {
+            stageTransition("Game Start!!", false);
+          } else {
+            stageTransition("Start Again!!", false);
+          }
         }
+        updateLives();
+        updateStage();
+      }
     }
 
     x += dx;
@@ -423,11 +427,13 @@ function playGame() {
 
   function stageTransition(message, resetGame = false) {
     clearInterval(gameInterval);
+
     context.clearRect(0, 0, canvas.width, canvas.height);
     context.font = "24px Source Code Pro"; // 글씨체 수정
     context.fillStyle = "#56AFCE"; // 글씨색깔 수정
     context.textAlign = "center";
     context.fillText(message, canvasWidth / 2, canvasHeight / 2);
+
     setTimeout(() => {
       if (resetGame) {
         window.location.reload();
@@ -459,18 +465,12 @@ function playGame() {
     context.closePath();
   }
 
-  function drawLives() {
-    context.font = "24px Source Code Pro"; // 글씨체 수정
-    context.fillStyle = "#56AFCE"; // 글씨색깔 수정
-    context.textAlign = "right";
-    context.fillText("Lives: " + lives, canvas.width - 50, 30);
+  function updateLives() {
+    $("#lives-count").text(lives);
   }
 
   function updateStage() {
-    context.font = "24px Source Code Pro"; // 글씨체 수정
-    context.fillStyle = "#56AFCE"; // 글씨색깔 수정
-    context.textAlign = "left";
-    context.fillText("Stage: " + stage, 40, 30);
+    $("#stage-count").text(stage);
   }
 }
 

@@ -170,11 +170,29 @@ input::placeholder {
 }
 
 #game-area {
-  height: 100%;
+  height: calc(100% - 50px);
   width: calc(100% - 60.5px);
   display: flex;
+  flex-direction: column;
   position: relative;
+
+  #count {
+    padding: 15px;
+    
+    display: flex;
+    justify-content: space-between;
+
+    #stage,
+    #lives {
+      color: #56AFCE;
+      font-size: 20px;
+      line-height: 20px;
+      display: flex;
+      align-items: center;
+    }
+  }
 }
+
 #user-setting,
 #dif-setting {
   position: absolute;
@@ -268,7 +286,6 @@ input::placeholder {
   background-color: var(--default-theme-point-color);
   color: #fff;
 }
-
 
 /* Main Game Area */
 #game-canvas {
