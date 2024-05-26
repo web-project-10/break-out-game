@@ -222,7 +222,7 @@ function changeBallShape(shape) {
 let stage = 1;
 let speed = [2, 3, 4]; // stage 별로 공 속도 증가 관리. stage1 = 2배, stage2 = 3배, stage3 = 4배
 let score = 0;
-let lives = 3;
+let lives = 4;
 let gameInterval;
 let transitionTimeout;
 const scoreStandard = {
@@ -266,9 +266,9 @@ function playGame() {
   var brick = [];
   var brickColumn = 4;
   var brickRow = 10;
-  var brickWidth = 100;
-  var brickHeight = 50;
-  var brickPadding = 30;
+  var brickWidth = canvas.width / 15;
+  var brickHeight = brickWidth / 2;
+  var brickPadding = (brickWidth * 3) / 10;
 
   for (var c = 0; c < brickColumn; c++) {
     brick[c] = [];
@@ -296,19 +296,22 @@ function playGame() {
     }
     if (y < circleRadius) {
       dy *= -1;
-    } else if (y > canvasHeight - paddleHeight - circleRadius) {
-      if (x > paddleX && x < paddleX + paddleWidth) {
-        dy *= -1;
-      } else {
-        //TODO 목숨 하나 잃었다는 알림 띄우고 다시 공 출발할 떄까지 2~3초 텀 두기
-        lives--;
-        if (!lives) {
-          alert("GAME OVER"); //TODO Game Over도 alert가 아니라, 게임 자체 창으로 띄우기
-          document.location.reload();
+    } else if (y > canvasHeight - 20 - circleRadius) {
+        if (x > paddleX && x < paddleX + paddleWidth) {
+          dy *= -1;
         } else {
-          resetBall();
+          //TODO 목숨 하나 잃었다는 알림 띄우고 다시 공 출발할 떄까지 2~3초 텀 두기
+          lives--;
+            if (!lives) {
+              //TODO Game Over도 alert가 아니라, 게임 자체 창으로 띄우기
+              stageTransition("Game Over!!", true);
+            } else {
+              if ((stage == 1) && (lives == 4)) {
+              } else {
+                stageTransition("Start Again!!", false);
+              }
+            }
         }
-      }
     }
 
     x += dx;

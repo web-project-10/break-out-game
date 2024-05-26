@@ -278,6 +278,20 @@ input::placeholder {
   position: relative;
   pointer-events: none;
 }
+/*
+#count {
+  height: 20px;
+  position: relative;
+}
+#stage {
+  position: absolute;
+  left: 10px;
+}
+#lives {
+  position: absolute;
+  right: 10px;
+}
+*/
 
 footer {
   border: 1px solid var(--default-theme-line-color);
