@@ -213,6 +213,8 @@ input::placeholder {
   align-items: center;
   gap: 30px;
 
+  background-color: #1D2A30;
+
   .setting-container {
     width: 100%;
     display: flex;
@@ -232,9 +234,11 @@ input::placeholder {
     width: 100%;
     text-align: left;
     font-size: 14px;
+    color: #98A1AB;
   }
   .setting-title {
     font-size: 21px;
+    color: #98A1AB;
   }
 
   input.setting-select-input {
@@ -295,20 +299,6 @@ input::placeholder {
   position: relative;
   pointer-events: none;
 }
-/*
-#count {
-  height: 20px;
-  position: relative;
-}
-#stage {
-  position: absolute;
-  left: 10px;
-}
-#lives {
-  position: absolute;
-  right: 10px;
-}
-*/
 
 footer {
   border: 1px solid var(--default-theme-line-color);

@@ -2,6 +2,9 @@
 
 window.onload = pageLoad;
 
+let gameColor = "#1D2A30";
+let textColor = "#98A1AB";
+
 function pageLoad() {
   selectSetting();
   displayBallSetting();
@@ -20,6 +23,20 @@ function pageLoad() {
   ); //난이도 선택시 css style 변화
   $("#start-btn").on("click", startGame); //난이도 선택 마무리, 게임 시작
   $("#start-btn").on("click", playGame);
+
+  $("input[name=theme-btn]").change(function () {
+    const theme = $(this).val();
+    if (theme == "Default") {
+      gameColor = "#1D2A30";
+      textColor = "#98A1AB";
+    } else if (theme == "Butterfly") {
+      gameColor = "#EAF0F8";
+      textColor = "#434343";
+    } else if (theme == "Dracula") {
+      gameColor = "#3A3933";
+      textColor = "#C7C5D6";
+    }
+  });
 }
 
 let difficulty; // 난이도 별로 숫자로 관리. normal = 1, hard = 2, extreme = 3
@@ -95,26 +112,24 @@ function selectSetting(setWhat) {
       Default: {
         backgroundColor: "#233239",
         elements: {
-          "#code-line-num": { "background-color": "#1D2A30", color: "#98A1AB" },
-          ".side-txt, .side-title, #side-score": { color: "#98A1AB" },
+          "#code-line-num, #user-setting, #dif-setting": { "background-color": "#1D2A30", color: "#98A1AB" },
+          ".side-txt, .side-title, #side-score, .player-name-title, .setting-title": { color: "#98A1AB" },
           "#side-setting": { color: "#56AFCE" },
         },
       },
       Butterfly: {
         backgroundColor: "#FFFFFF",
         elements: {
-          "#user-setting, #dif-setting": { "background-color": "#233239" },
-          "#code-line-num": { "background-color": "#EAF0F8", color: "#434343" },
-          ".side-txt, .side-title, #side-score": { color: "#434343" },
+          "#code-line-num, #user-setting, #dif-setting": { "background-color": "#EAF0F8", color: "#434343" },
+          ".side-txt, .side-title, #side-score, .player-name-title, .setting-title": { color: "#434343" },
           "#side-setting": { color: "#56AFCE" },
         },
       },
       Dracula: {
         backgroundColor: "#282A36",
         elements: {
-          "#user-setting, #dif-setting": { "background-color": "#233239" },
-          "#code-line-num": { "background-color": "#3A3933", color: "#C7C5D6" },
-          ".side-txt, .side-title, #side-score": { color: "#C7C5D6" },
+          "#code-line-num, #user-setting, #dif-setting": { "background-color": "#3A3933", color: "#C7C5D6" },
+          ".side-txt, .side-title, #side-score, .player-name-title, .setting-title": { color: "#C7C5D6" },
           "#side-setting": { color: "#56AFCE" },
         },
       },
@@ -302,7 +317,7 @@ function playGame() {
       if (x > paddleX && x < paddleX + paddleWidth) {
         dy *= -1;
       } else {
-        //TODO 목숨 하나 잃었다는 알림 띄우고 다시 공 출발할 떄까지 2~3초 텀 두기
+        //TODO 목숨 하나 잃었다는 알림 띄우고 다시 공 출발할 떄까지 2~3초 텀 두기 -- 해결
         lives--;
         if (!lives) {
           stageTransition("Game Over!!", true);
@@ -364,9 +379,8 @@ function playGame() {
 
           context.beginPath();
           context.rect(brickX, brickY, brickWidth, brickHeight);
-          context.fillStyle = "#56AFCE"; // 색상을 어떻게 할지 고민입니다.
+          context.fillStyle = gameColor; // 블록 색깔 바꾸는 코드 이용해서 바꾸기
           context.fill();
-
           context.closePath();
         }
       }
@@ -428,11 +442,21 @@ function playGame() {
   function stageTransition(message, resetGame = false) {
     clearInterval(gameInterval);
 
-    context.clearRect(0, 0, canvas.width, canvas.height);
-    context.font = "24px Source Code Pro"; // 글씨체 수정
-    context.fillStyle = "#56AFCE"; // 글씨색깔 수정
-    context.textAlign = "center";
-    context.fillText(message, canvasWidth / 2, canvasHeight / 2);
+    const canvas = $("#game-canvas");
+    canvas.hide();
+
+    const div = $("<div></div>").css({
+      width: "calc(100% - 60.5px)",
+      height: "calc(100% - 50px)",
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      font: "24px 'Source Code Pro'",
+      color: textColor,
+      textAlign: "center"
+    }).text(message);
+
+    $("#game-area").append(div);
 
     setTimeout(() => {
       if (resetGame) {
@@ -445,6 +469,8 @@ function playGame() {
         } else if (difficulty == 3) {
           document.getElementById("side-dif").innerHTML = "Extreme";
         }
+        div.remove();
+        canvas.show();
         gameInterval = setInterval(gameDraw, 10);
       }
     }, 3000);
@@ -460,18 +486,18 @@ function playGame() {
   function drawPaddle() {
     context.beginPath();
     context.rect(paddleX, paddleY, paddleWidth, paddleHeight);
-    context.fillStyle = "#56AFCE"; // 패드 색깔 바꾸는 코드 이용해서 바꾸기
+    context.fillStyle = gameColor; // 패드 색깔 바꾸는 코드 이용해서 바꾸기
     context.fill();
     context.closePath();
   }
 
   function updateLives() {
+    $("#lives").css({color: textColor});
     $("#lives-count").text(lives);
   }
 
   function updateStage() {
+    $("#stage").css({color: textColor});
     $("#stage-count").text(stage);
   }
 }
-
-//목숨, 스테이지, 다음 스테이지 안내문. 글씨체 및 색깔 고민
