@@ -249,12 +249,14 @@ function playGame() {
 
   const canvasWidth = canvas.offsetWidth;
   const canvasHeight = canvas.offsetHeight;
+  canvas.width = canvasWidth;
+  canvas.height = canvasHeight;
 
   const circleRadius = 3;
   const rectWidth = circleRadius * 2;
 
-  let x = canvasWidth / 2;
-  let y = (canvasHeight / 3) * 2;
+  let x = canvasWidth;
+  let y = canvasHeight;
 
   const direct = [1, -1];
   let dx =
@@ -275,7 +277,7 @@ function playGame() {
     }
   }
 
-  var paddleWidth = 300;
+  var paddleWidth = 100;
   var paddleHeight = 10;
   var paddleX = (canvasWidth - paddleWidth) / 2;
   var paddleY = canvasHeight - paddleHeight - 10;
@@ -289,19 +291,19 @@ function playGame() {
     drawLives();
     updateStage();
 
-    if (x < 0 + circleRadius || x > canvasWidth - circleRadius) {
+    if (x < circleRadius || x > canvasWidth - circleRadius) {
       dx *= -1;
     }
-    if (y < 0 + circleRadius) {
+    if (y < circleRadius) {
       dy *= -1;
-    } else if (y > canvasHeight - circleRadius - 20) {
-      //이거 왜 20이 아니라 paddleY로 설정하면 안되는걸까요...?
+    } else if (y > canvasHeight - paddleHeight - circleRadius) {
       if (x > paddleX && x < paddleX + paddleWidth) {
         dy *= -1;
       } else {
+        //TODO 목숨 하나 잃었다는 알림 띄우고 다시 공 출발할 떄까지 2~3초 텀 두기
         lives--;
         if (!lives) {
-          alert("GAME OVER");
+          alert("GAME OVER"); //TODO Game Over도 alert가 아니라, 게임 자체 창으로 띄우기
           document.location.reload();
         } else {
           resetBall();
@@ -326,8 +328,8 @@ function playGame() {
   }
 
   function resetBall() {
-    x = canvasWidth / 2;
-    y = (canvasHeight / 3) * 2;
+    x = paddleX + paddleWidth/2;
+    y = canvasHeight - paddleHeight - 10 - circleRadius;
     dx =
       0.3 *
       difficulty *
@@ -448,14 +450,14 @@ function playGame() {
   }
 
   function drawLives() {
-    context.font = "24px Arial"; // 글씨체 수정
+    context.font = "24px Source Code Pro"; // 글씨체 수정
     context.fillStyle = "#56AFCE"; // 글씨색깔 수정
     context.textAlign = "right";
     context.fillText("Lives: " + lives, canvas.width - 50, 30);
   }
 
   function updateStage() {
-    context.font = "24px Arial"; // 글씨체 수정
+    context.font = "24px Source Code Pro"; // 글씨체 수정
     context.fillStyle = "#56AFCE"; // 글씨색깔 수정
     context.textAlign = "left";
     context.fillText("Stage: " + stage, 40, 30);
