@@ -359,7 +359,7 @@ function playGame() {
           context.rect(brickX, brickY, brickWidth, brickHeight);
           context.fillStyle = "#56AFCE"; // 색상을 어떻게 할지 고민입니다.
           context.fill();
-          
+
           context.closePath();
         }
       }
@@ -421,7 +421,7 @@ function playGame() {
   function stageTransition(message, resetGame = false) {
     clearInterval(gameInterval);
     context.clearRect(0, 0, canvas.width, canvas.height);
-    context.font = "24px Arial"; // 글씨체 수정
+    context.font = "24px Source Code Pro"; // 글씨체 수정
     context.fillStyle = "#56AFCE"; // 글씨색깔 수정
     context.textAlign = "center";
     context.fillText(message, canvasWidth / 2, canvasHeight / 2);
