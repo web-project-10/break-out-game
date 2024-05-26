@@ -310,7 +310,7 @@ function playGame() {
           if (lives == 3) {
             stageTransition("Game Start!!", false);
           } else {
-            stageTransition("Start Again!!", false);
+            stageTransition("Try Again!!", false);
           }
         }
         updateLives();
