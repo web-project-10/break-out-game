@@ -328,7 +328,7 @@ function playGame() {
   }
 
   function resetBall() {
-    x = paddleX + paddleWidth/2;
+    x = paddleX + paddleWidth / 2;
     y = canvasHeight - paddleHeight - 10 - circleRadius;
     dx =
       0.3 *
@@ -342,17 +342,24 @@ function playGame() {
     for (var c = 0; c < brickColumn; c++) {
       for (var r = 0; r < brickRow; r++) {
         var brickOffsetLeft =
-          (canvasWidth - brickWidth * 10 - brickPadding * 9) / 2;
+          (canvasWidth -
+            brickWidth * brickRow -
+            brickPadding * (brickRow - 1)) /
+          2;
         var brickOffsetTop = 50;
+
         if (brick[c][r].status == 1) {
           var brickX = r * (brickWidth + brickPadding) + brickOffsetLeft;
           var brickY = c * (brickHeight + brickPadding) + brickOffsetTop;
+
           brick[c][r].x = brickX;
           brick[c][r].y = brickY;
+
           context.beginPath();
           context.rect(brickX, brickY, brickWidth, brickHeight);
           context.fillStyle = "#56AFCE"; // 색상을 어떻게 할지 고민입니다.
           context.fill();
+          
           context.closePath();
         }
       }
