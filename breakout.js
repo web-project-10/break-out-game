@@ -89,48 +89,47 @@ function selectSetting(setWhat) {
   }
 
   // 테마 변경 시 배경색 조정
-  $(function() {
+  $(function () {
     const themeStyles = {
-      "Default": {
-        "backgroundColor": "#233239",
-        "elements": {
-          "#code-line-num": { "background-color": "#1D2A30", "color": "#98A1AB" },
-          ".side-txt, .side-title, #side-score": { "color": "#98A1AB" },
-          "#side-setting": { "color": "#56AFCE" }
-        }
+      Default: {
+        backgroundColor: "#233239",
+        elements: {
+          "#code-line-num": { "background-color": "#1D2A30", color: "#98A1AB" },
+          ".side-txt, .side-title, #side-score": { color: "#98A1AB" },
+          "#side-setting": { color: "#56AFCE" },
+        },
       },
-      "Butterfly": {
-        "backgroundColor": "#FFFFFF",
-        "elements": {
-         "#user-setting, #dif-setting": { "background-color": "#233239" },
-          "#code-line-num": { "background-color": "#EAF0F8", "color": "#434343" },
-          ".side-txt, .side-title, #side-score": { "color": "#434343" },
-          "#side-setting": { "color": "#56AFCE" }
-        }
+      Butterfly: {
+        backgroundColor: "#FFFFFF",
+        elements: {
+          "#user-setting, #dif-setting": { "background-color": "#233239" },
+          "#code-line-num": { "background-color": "#EAF0F8", color: "#434343" },
+          ".side-txt, .side-title, #side-score": { color: "#434343" },
+          "#side-setting": { color: "#56AFCE" },
+        },
       },
-      "Dracula": {
-        "backgroundColor": "#282A36",
-        "elements": {
-         "#user-setting, #dif-setting": { "background-color": "#233239" },
-          "#code-line-num": { "background-color": "#3A3933", "color": "#C7C5D6" },
-          ".side-txt, .side-title, #side-score": { "color": "#C7C5D6" },
-          "#side-setting": { "color": "#56AFCE" }
-        }
-      }
+      Dracula: {
+        backgroundColor: "#282A36",
+        elements: {
+          "#user-setting, #dif-setting": { "background-color": "#233239" },
+          "#code-line-num": { "background-color": "#3A3933", color: "#C7C5D6" },
+          ".side-txt, .side-title, #side-score": { color: "#C7C5D6" },
+          "#side-setting": { color: "#56AFCE" },
+        },
+      },
     };
 
-  $("input[name=theme-btn]").change(function () {
-    const theme = $(this).val();
-    const { backgroundColor, elements } = themeStyles[theme];
+    $("input[name=theme-btn]").change(function () {
+      const theme = $(this).val();
+      const { backgroundColor, elements } = themeStyles[theme];
 
-    $("#content").css("background-color", backgroundColor);
+      $("#content").css("background-color", backgroundColor);
 
-    for (const selector in elements) {
-      $(selector).css(elements[selector]);
-    }
+      for (const selector in elements) {
+        $(selector).css(elements[selector]);
+      }
+    });
   });
-});
-
 }
 
 function completeSetting() {
@@ -167,11 +166,15 @@ function displayBallSetting() {
   const rectWidth = circleRadius * 2;
 
   let x = Math.floor(Math.random() * (canvasWidth - rectWidth * 2) + rectWidth);
-  let y = Math.floor(Math.random() * (canvasHeight - rectWidth * 2) + rectWidth);
+  let y = Math.floor(
+    Math.random() * (canvasHeight - rectWidth * 2) + rectWidth
+  );
 
   const direct = [1, -1];
-  let dx = 0.3 * difficulty * speed[stage-1] * direct[Math.floor(Math.random() * 2)];
-  let dy = 0.3 * difficulty * speed[stage-1] * direct[Math.floor(Math.random() * 2)];
+  let dx =
+    0.3 * difficulty * speed[stage - 1] * direct[Math.floor(Math.random() * 2)];
+  let dy =
+    0.3 * difficulty * speed[stage - 1] * direct[Math.floor(Math.random() * 2)];
 
   ball = setInterval(function () {
     draw();
@@ -197,9 +200,14 @@ function displayBallSetting() {
       context.beginPath();
 
       if (ballShape === BallShape.CIRCLE) {
-        context.arc(x, y, circleRadius, 0, 2*Math.PI, true);
+        context.arc(x, y, circleRadius, 0, 2 * Math.PI, true);
       } else {
-        context.rect(x - rectWidth / 2, y - rectWidth / 2, rectWidth, rectWidth);
+        context.rect(
+          x - rectWidth / 2,
+          y - rectWidth / 2,
+          rectWidth,
+          rectWidth
+        );
       }
       context.fillStyle = "#71929d";
       context.fill();
@@ -225,7 +233,7 @@ const scoreStandard = {
 
 function startGame() {
   $("#dif-setting").css({ display: "none" });
-  $("#side-score-box").css({display: "block" });
+  $("#side-score-box").css({ display: "block" });
   clearInterval(ball);
 }
 
@@ -249,8 +257,9 @@ function playGame() {
   let y = (canvasHeight / 3) * 2;
 
   const direct = [1, -1];
-  let dx = 0.3 * difficulty * speed[stage-1] * direct[Math.floor(Math.random() * 2)];
-  let dy = 0.3 * difficulty * speed[stage-1] * direct[1];
+  let dx =
+    0.3 * difficulty * speed[stage - 1] * direct[Math.floor(Math.random() * 2)];
+  let dy = 0.3 * difficulty * speed[stage - 1] * direct[1];
 
   var brick = [];
   var brickColumn = 4;
@@ -262,12 +271,12 @@ function playGame() {
   for (var c = 0; c < brickColumn; c++) {
     brick[c] = [];
     for (var r = 0; r < brickRow; r++) {
-      brick[c][r] = {x: 0, y: 0, status: 1};
+      brick[c][r] = { x: 0, y: 0, status: 1 };
     }
   }
 
   var paddleWidth = 300;
-  var paddleHeight = 10;   
+  var paddleHeight = 10;
   var paddleX = (canvasWidth - paddleWidth) / 2;
   var paddleY = canvasHeight - paddleHeight - 10;
 
@@ -279,25 +288,26 @@ function playGame() {
     drawPaddle();
     drawLives();
     updateStage();
-      
+
     if (x < 0 + circleRadius || x > canvasWidth - circleRadius) {
       dx *= -1;
     }
     if (y < 0 + circleRadius) {
       dy *= -1;
-    } else if (y > canvasHeight - circleRadius - 20) {  //이거 왜 20이 아니라 paddleY로 설정하면 안되는걸까요...?
-        if (x > paddleX && x < paddleX + paddleWidth) {
-          dy *= -1;
+    } else if (y > canvasHeight - circleRadius - 20) {
+      //이거 왜 20이 아니라 paddleY로 설정하면 안되는걸까요...?
+      if (x > paddleX && x < paddleX + paddleWidth) {
+        dy *= -1;
+      } else {
+        lives--;
+        if (!lives) {
+          alert("GAME OVER");
+          document.location.reload();
         } else {
-            lives--;
-            if (!lives) {
-              alert("GAME OVER");
-              document.location.reload();
-            } else {
-              resetBall();
-              }
-          }
+          resetBall();
+        }
       }
+    }
 
     x += dx;
     y += dy;
@@ -310,7 +320,7 @@ function playGame() {
     ballShape == BallShape.CIRCLE
       ? context.arc(x, y, circleRadius, 0, 2.0 * Math.PI, true)
       : context.rect(x, y, rectWidth, rectWidth);
-    context.fillStyle = "#71929d";  // 공 색깔 바꾸는 코드 이용해서 바꾸기
+    context.fillStyle = "#71929d"; // 공 색깔 바꾸는 코드 이용해서 바꾸기
     context.fill();
     context.closePath();
   }
@@ -318,23 +328,28 @@ function playGame() {
   function resetBall() {
     x = canvasWidth / 2;
     y = (canvasHeight / 3) * 2;
-    dx = 0.3 * difficulty * speed[stage-1] * direct[Math.floor(Math.random() * 2)];
-    dy = 0.3 * difficulty * speed[stage-1] * direct[1];
+    dx =
+      0.3 *
+      difficulty *
+      speed[stage - 1] *
+      direct[Math.floor(Math.random() * 2)];
+    dy = 0.3 * difficulty * speed[stage - 1] * direct[1];
   }
 
   function drawBrick() {
     for (var c = 0; c < brickColumn; c++) {
       for (var r = 0; r < brickRow; r++) {
-        var brickOffsetLeft = (canvasWidth - brickWidth*10 - brickPadding*9) / 2;
+        var brickOffsetLeft =
+          (canvasWidth - brickWidth * 10 - brickPadding * 9) / 2;
         var brickOffsetTop = 50;
         if (brick[c][r].status == 1) {
-          var brickX = (r * (brickWidth + brickPadding)) + brickOffsetLeft;
-          var brickY = (c * (brickHeight + brickPadding)) + brickOffsetTop;
+          var brickX = r * (brickWidth + brickPadding) + brickOffsetLeft;
+          var brickY = c * (brickHeight + brickPadding) + brickOffsetTop;
           brick[c][r].x = brickX;
           brick[c][r].y = brickY;
           context.beginPath();
           context.rect(brickX, brickY, brickWidth, brickHeight);
-          context.fillStyle = "#56AFCE";  // 색상을 어떻게 할지 고민입니다.
+          context.fillStyle = "#56AFCE"; // 색상을 어떻게 할지 고민입니다.
           context.fill();
           context.closePath();
         }
@@ -347,12 +362,17 @@ function playGame() {
       for (var r = 0; r < brickRow; r++) {
         var b = brick[c][r];
         if (b.status == 1) {
-          if (x > b.x && x < b.x + brickWidth && y > b.y && y < b.y + brickHeight) {
+          if (
+            x > b.x &&
+            x < b.x + brickWidth &&
+            y > b.y &&
+            y < b.y + brickHeight
+          ) {
             var overLeft = Math.abs(x - (b.x + brickWidth));
             var overTop = Math.abs(y - (b.y + brickHeight));
-            var overRight = Math.abs((x + dx) - b.x);
-            var overBottom = Math.abs((y + dy) - b.y);
-            
+            var overRight = Math.abs(x + dx - b.x);
+            var overBottom = Math.abs(y + dy - b.y);
+
             if (Math.min(overLeft, overRight) < Math.min(overTop, overBottom)) {
               dx *= -1;
             } else {
@@ -362,7 +382,7 @@ function playGame() {
             b.status = 0;
             score += 100;
             document.getElementById("side-score").innerHTML = score;
-            
+
             checkStage();
           }
         }
@@ -392,8 +412,8 @@ function playGame() {
   function stageTransition(message, resetGame = false) {
     clearInterval(gameInterval);
     context.clearRect(0, 0, canvas.width, canvas.height);
-    context.font = "24px Arial";  // 글씨체 수정
-    context.fillStyle = "#56AFCE";  // 글씨색깔 수정
+    context.font = "24px Arial"; // 글씨체 수정
+    context.fillStyle = "#56AFCE"; // 글씨색깔 수정
     context.textAlign = "center";
     context.fillText(message, canvasWidth / 2, canvasHeight / 2);
     setTimeout(() => {
@@ -422,21 +442,21 @@ function playGame() {
   function drawPaddle() {
     context.beginPath();
     context.rect(paddleX, paddleY, paddleWidth, paddleHeight);
-    context.fillStyle = "#56AFCE";  // 패드 색깔 바꾸는 코드 이용해서 바꾸기
+    context.fillStyle = "#56AFCE"; // 패드 색깔 바꾸는 코드 이용해서 바꾸기
     context.fill();
     context.closePath();
   }
 
   function drawLives() {
-    context.font = "24px Arial";  // 글씨체 수정
-    context.fillStyle = "#56AFCE";  // 글씨색깔 수정
+    context.font = "24px Arial"; // 글씨체 수정
+    context.fillStyle = "#56AFCE"; // 글씨색깔 수정
     context.textAlign = "right";
     context.fillText("Lives: " + lives, canvas.width - 50, 30);
   }
 
   function updateStage() {
-    context.font = "24px Arial";  // 글씨체 수정
-    context.fillStyle = "#56AFCE";  // 글씨색깔 수정
+    context.font = "24px Arial"; // 글씨체 수정
+    context.fillStyle = "#56AFCE"; // 글씨색깔 수정
     context.textAlign = "left";
     context.fillText("Stage: " + stage, 40, 30);
   }
