@@ -112,24 +112,36 @@ function selectSetting(setWhat) {
       Default: {
         backgroundColor: "#233239",
         elements: {
-          "#code-line-num, #user-setting, #dif-setting": { "background-color": "#1D2A30", color: "#98A1AB" },
-          ".side-txt, .side-title, #side-score, .player-name-title, .setting-title": { color: "#98A1AB" },
+          "#code-line-num, #user-setting, #dif-setting": {
+            "background-color": "#1D2A30",
+            color: "#98A1AB",
+          },
+          ".side-txt, .side-title, #side-score, .player-name-title, .setting-title":
+            { color: "#98A1AB" },
           "#side-setting": { color: "#56AFCE" },
         },
       },
       Butterfly: {
         backgroundColor: "#FFFFFF",
         elements: {
-          "#code-line-num, #user-setting, #dif-setting": { "background-color": "#EAF0F8", color: "#434343" },
-          ".side-txt, .side-title, #side-score, .player-name-title, .setting-title": { color: "#434343" },
+          "#code-line-num, #user-setting, #dif-setting": {
+            "background-color": "#EAF0F8",
+            color: "#434343",
+          },
+          ".side-txt, .side-title, #side-score, .player-name-title, .setting-title":
+            { color: "#434343" },
           "#side-setting": { color: "#56AFCE" },
         },
       },
       Dracula: {
         backgroundColor: "#282A36",
         elements: {
-          "#code-line-num, #user-setting, #dif-setting": { "background-color": "#3A3933", color: "#C7C5D6" },
-          ".side-txt, .side-title, #side-score, .player-name-title, .setting-title": { color: "#C7C5D6" },
+          "#code-line-num, #user-setting, #dif-setting": {
+            "background-color": "#3A3933",
+            color: "#C7C5D6",
+          },
+          ".side-txt, .side-title, #side-score, .player-name-title, .setting-title":
+            { color: "#C7C5D6" },
           "#side-setting": { color: "#56AFCE" },
         },
       },
@@ -251,6 +263,7 @@ function startGame() {
   $("#dif-setting").css({ display: "none" });
   $("#side-score-box").css({ display: "block" });
   $("#count").css({ display: "flex" });
+  $("#game-canvas").css({ height: "calc(100% - 50px)" });
   clearInterval(ball);
 }
 
@@ -445,16 +458,18 @@ function playGame() {
     const canvas = $("#game-canvas");
     canvas.hide();
 
-    const div = $("<div></div>").css({
-      width: "calc(100% - 60.5px)",
-      height: "calc(100% - 50px)",
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-      font: "24px 'Source Code Pro'",
-      color: textColor,
-      textAlign: "center"
-    }).text(message);
+    const div = $("<div></div>")
+      .css({
+        width: "calc(100% - 60.5px)",
+        height: "calc(100% - 50px)",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        font: "24px 'Source Code Pro'",
+        color: textColor,
+        textAlign: "center",
+      })
+      .text(message);
 
     $("#game-area").append(div);
 
@@ -492,12 +507,12 @@ function playGame() {
   }
 
   function updateLives() {
-    $("#lives").css({color: textColor});
+    $("#lives").css({ color: textColor });
     $("#lives-count").text(lives);
   }
 
   function updateStage() {
-    $("#stage").css({color: textColor});
+    $("#stage").css({ color: textColor });
     $("#stage-count").text(stage);
   }
 }
