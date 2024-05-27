@@ -173,8 +173,27 @@ input::placeholder {
   height: 100%;
   width: calc(100% - 60.5px);
   display: flex;
+  flex-direction: column;
   position: relative;
+  border-left: 0.5px solid var(--default-theme-line-color);
+
+  #count {
+    padding: 15px;
+    
+    display: flex;
+    justify-content: space-between;
+
+    #stage,
+    #lives {
+      color: #56AFCE;
+      font-size: 20px;
+      line-height: 20px;
+      display: flex;
+      align-items: center;
+    }
+  }
 }
+
 #user-setting,
 #dif-setting {
   position: absolute;
@@ -195,6 +214,8 @@ input::placeholder {
   align-items: center;
   gap: 30px;
 
+  background-color: #1D2A30;
+
   .setting-container {
     width: 100%;
     display: flex;
@@ -214,9 +235,11 @@ input::placeholder {
     width: 100%;
     text-align: left;
     font-size: 14px;
+    color: #98A1AB;
   }
   .setting-title {
     font-size: 21px;
+    color: #98A1AB;
   }
 
   input.setting-select-input {
@@ -268,7 +291,6 @@ input::placeholder {
   background-color: var(--default-theme-point-color);
   color: #fff;
 }
-
 
 /* Main Game Area */
 #game-canvas {
