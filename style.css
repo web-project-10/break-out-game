@@ -170,11 +170,12 @@ input::placeholder {
 }
 
 #game-area {
-  height: calc(100% - 50px);
+  height: 100%;
   width: calc(100% - 60.5px);
   display: flex;
   flex-direction: column;
   position: relative;
+  border-left: 0.5px solid var(--default-theme-line-color);
 
   #count {
     padding: 15px;
