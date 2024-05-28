@@ -120,6 +120,8 @@ function selectSetting(setWhat) {
             { color: "#98A1AB" },
           "#side-setting": { color: "#56AFCE" },
         },
+        src1: "./assets/folder1_default.png",
+        src2: "./assets/folder2_default.png",
       },
       Butterfly: {
         backgroundColor: "#FFFFFF",
@@ -132,6 +134,8 @@ function selectSetting(setWhat) {
             { color: "#434343" },
           "#side-setting": { color: "#56AFCE" },
         },
+        src1: "./assets/folder1_butterfly.png",
+        src2: "./assets/folder2_butterfly.png",
       },
       Dracula: {
         backgroundColor: "#282A36",
@@ -144,15 +148,18 @@ function selectSetting(setWhat) {
             { color: "#C7C5D6" },
           "#side-setting": { color: "#56AFCE" },
         },
+        src1: "./assets/folder1_dracula.png",
+        src2: "./assets/folder2_dracula.png",
       },
     };
 
     $("input[name=theme-btn]").change(function () {
       const theme = $(this).val();
-      const { backgroundColor, elements } = themeStyles[theme];
+      const { backgroundColor, elements, src1,  src2} = themeStyles[theme];
 
       $("#content").css("background-color", backgroundColor);
-
+      $(".folder1").attr("src", src1);
+      $(".folder2").attr("src", src2);
       for (const selector in elements) {
         $(selector).css(elements[selector]);
       }
