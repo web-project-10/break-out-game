@@ -650,6 +650,7 @@ function playGame() {
         if (difficulty < 3) {
           difficulty++;
           stage = 1;
+          lives = 3;
           stageTransition("You Win!! Go To Next Level!!");
         } else {
           stageTransition("Congratulation!!! You Win This Game!!!", true);
