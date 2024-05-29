@@ -2,8 +2,9 @@
 
 window.onload = pageLoad;
 
-let gameColor = "#1D2A30";
+let gameColor = "#71929d";
 let textColor = "#98A1AB";
+let brickTextColor = "#39474e";
 
 function pageLoad() {
   selectSetting();
@@ -27,19 +28,27 @@ function pageLoad() {
   $("input[name=theme-btn]").change(function () {
     const theme = $(this).val();
     if (theme == "Default") {
-      gameColor = "#1D2A30";
+      gameColor = "#71929d";
       textColor = "#98A1AB";
+      brickTextColor = "#39474e";
     } else if (theme == "Butterfly") {
-      gameColor = "#EAF0F8";
+      gameColor = "#434343";
       textColor = "#434343";
+      brickTextColor = "#EAF0F8";
     } else if (theme == "Dracula") {
-      gameColor = "#3A3933";
+      gameColor = "#C7C5D6";
       textColor = "#C7C5D6";
+      brickTextColor = "#3A3933";
     }
   });
 }
 
 let difficulty; // 난이도 별로 숫자로 관리. normal = 1, hard = 2, extreme = 3
+const difficultySpeed = {
+  1: 0.5,
+  2: 1.3,
+  3: 2,
+};
 
 const SetWhat = {
   DEFAULT_SETTING: "defaultSetting",
@@ -95,8 +104,6 @@ function selectSetting(setWhat) {
         $("#side-dif").text(
           $(":input:radio[name=difficulty-btn]:checked").val()
         );
-
-        console.log("난이도 :", difficulty);
       } else {
         $label.css({
           "background-color": "#fff",
@@ -155,7 +162,7 @@ function selectSetting(setWhat) {
 
     $("input[name=theme-btn]").change(function () {
       const theme = $(this).val();
-      const { backgroundColor, elements, src1,  src2} = themeStyles[theme];
+      const { backgroundColor, elements, src1, src2 } = themeStyles[theme];
 
       $("#content").css("background-color", backgroundColor);
       $(".folder1").attr("src", src1);
@@ -207,9 +214,15 @@ function displayBallSetting() {
 
   const direct = [1, -1];
   let dx =
-    0.3 * difficulty * speed[stage - 1] * direct[Math.floor(Math.random() * 2)];
+    0.3 *
+    difficultySpeed[difficulty] *
+    1 *
+    direct[Math.floor(Math.random() * 2)];
   let dy =
-    0.3 * difficulty * speed[stage - 1] * direct[Math.floor(Math.random() * 2)];
+    0.3 *
+    difficultySpeed[difficulty] *
+    1 *
+    direct[Math.floor(Math.random() * 2)];
 
   ball = setInterval(function () {
     draw();
@@ -255,14 +268,14 @@ function changeBallShape(shape) {
 }
 
 let stage = 1;
-let speed = [2, 3, 4]; // stage 별로 공 속도 증가 관리. stage1 = 2배, stage2 = 3배, stage3 = 4배
+let speed = [4, 6, 9]; // stage 별로 공 속도 증가 관리. stage1 = 2배, stage2 = 3배, stage3 = 4배
 let score = 0;
 let lives = 4;
 let gameInterval;
 let transitionTimeout;
 const scoreStandard = {
   1: [300, 600, 1000],
-  2: [500, 1000, 1500],
+  2: [1000, 2500, 7000],
   3: [1000, 2000, 3000],
 };
 
@@ -297,66 +310,103 @@ function playGame() {
 
   const direct = [1, -1];
   let dx =
-    0.3 * difficulty * speed[stage - 1] * direct[Math.floor(Math.random() * 2)];
-  let dy = 0.3 * difficulty * speed[stage - 1] * direct[1];
+    10 * difficulty * speed[stage - 1] * direct[Math.floor(Math.random() * 2)];
+  let dy = 10 * difficulty * speed[stage - 1] * direct[1];
 
   var brick = [];
-  var brickColumn = 7;
+  var brickColumn = 6;
   var brickRow = 8;
   var brickWidth = canvas.width / 12;
-  var brickHeight = brickWidth / 4;
-  var brickPadding = (brickWidth * 3) / 10;
-  var ballColor = "#71929d";/////// 공 기본 색
-  var paddleColor = gameColor;/////// 패들 기본 색
+  var brickHeight = brickWidth / 2.5;
+  var brickPadding = (brickWidth * 2) / 10;
+  var ballColor = gameColor; /////// 공 기본 색
+  var paddleColor = gameColor; /////// 패들 기본 색
   var brickOffsetLeft =
-          (canvasWidth -
-            brickWidth * brickRow -
-            brickPadding * (brickRow - 1)) /
-          2;
+    (canvasWidth - brickWidth * brickRow - brickPadding * (brickRow - 1)) / 2;
   var brickOffsetTop = 50;
 
-
-  function resetBrick(state){
+  function resetBrick(state) {
+    console.log(
+      "difficulty: ",
+      difficulty,
+      ", stage: ",
+      stage,
+      " brick reset state: ",
+      state
+    );
     for (var c = 0; c < brickColumn; c++) {
       brick[c] = [];
       for (var r = 0; r < brickRow; r++) {
-        const code = Math.random() < 0.5 ?GetRandomCode() : null;
-        brick[c][r] = { x: r * (brickWidth + brickPadding) + brickOffsetLeft, y: c * (brickHeight + brickPadding) + brickOffsetTop, status: state, code: code}; 
+        const code = Math.random() < 0.5 ? GetRandomCode() : null;
+
+        brick[c][r] = {
+          x: r * (brickWidth + brickPadding) + brickOffsetLeft,
+          y: c * (brickHeight + brickPadding) + brickOffsetTop,
+          status: state,
+          code: code,
+        };
       }
     }
   }
 
-  resetBrick(1);
+  resetBrick(difficulty);
   var paddleWidth = 100;
   var paddleHeight = 10;
   var paddleX = (canvasWidth - paddleWidth) / 2;
   var paddleY = canvasHeight - paddleHeight - 10;
   var rndcnt = 500;
+  var brickXDirect = direct[Math.floor(Math.random() * 2)];
+  var brickYDirect = direct[Math.floor(Math.random() * 2)];
 
   function GetRandomCode() {
-    const codes = [//여기에 코드 추가하시면 됩니다. // 테스트용으로 여러개 넣어봤음.
-        "$('body').css('background-color', 'blue');",
-        "$('canvas').css('border', '5px solid red');",
-        "ballColor = changeBallColor();",
-        "ballColor = changeBallColor();",
-        "ballColor = changeBallColor();",
-        "ballColor = changeBallColor();",
-        "ballColor = changeBallColor();",
-        "ballColor = changeBallColor();",
-        "ballColor = changeBallColor();",
-        "paddleColor = changePaddleColor();",
-        "paddleColor = changePaddleColor();",
-        "paddleColor = changePaddleColor();",
-        "paddleColor = changePaddleColor();",
-        "paddleColor = changePaddleColor();",
-        "paddleColor = changePaddleColor();",
-        "paddleColor = changePaddleColor();"
+    const codes = [
+      //여기에 코드 추가하시면 됩니다. // 테스트용으로 여러개 넣어봤음.
+      "randomBallColor();",
+      "randomPaddleColor();",
+      // "break5Blocks();",
+      // "add5Blocks();",
+      // "toNextStage();",
+      // "crashThisLine();"
     ];
     return codes[Math.floor(Math.random() * codes.length)]; //여기서 length값 조절해서 모드에 따라 나올 함수 조절 가능.
   }
 
+  const colors = [
+    "red",
+    "blue",
+    "pink",
+    "green",
+    "purple",
+    "lightgray",
+    "aqua",
+    "aquamarines",
+    "salmon",
+    "skyblue",
+    "darkcyan",
+    "orange",
+    "yellow",
+    "peachpuff",
+    "slategray",
+    "darkolivegreen",
+  ];
+  function randomBallColor() {
+    newColor = colors[Math.floor(Math.random() * colors.length)];
+    while (ballColor == newColor) {
+      newColor = colors[Math.floor(Math.random() * colors.length)];
+    }
+    ballColor = newColor;
+  }
+  function randomPaddleColor() {
+    newPaddleColor = colors[Math.floor(Math.random() * colors.length)];
+    while (paddleColor == newPaddleColor) {
+      newPaddleColor = colors[Math.floor(Math.random() * colors.length)];
+    }
+    paddleColor = newPaddleColor;
+  }
+
   function gameDraw() {
     context.clearRect(0, 0, canvas.width, canvas.height);
+
     drawBall();
     drawBrick();
     collisionCheck();
@@ -364,34 +414,34 @@ function playGame() {
     updateLives();
     updateStage();
     rndcnt++;
+
     if (x < circleRadius || x > canvasWidth - circleRadius) {
       dx *= -1;
     }
     if (y < circleRadius) {
       dy *= -1;
     } else if (y > canvasHeight - 20 - circleRadius) {
-      if (x > paddleX && x < paddleX + paddleWidth) { 
+      if (x > paddleX && x < paddleX + paddleWidth) {
         // 패들 중심으로부터의 거리 계산
         let paddleCenter = paddleX + paddleWidth / 2;
         let hitPosition = x - paddleCenter;
-      
+
         // 너무 낮은 각도로 되면 안되니 45도 제한
         let maxAngle = Math.PI / 4;
         let angle = (hitPosition / (paddleWidth / 2)) * maxAngle;
-      
+
         // 각도에 따른 공의 속도 설정
         let speed = Math.sqrt(dx * dx + dy * dy);
         dx = speed * Math.sin(angle);
         dy = -speed * Math.cos(angle);
       } else {
-        //TODO 목숨 하나 잃었다는 알림 띄우고 다시 공 출발할 떄까지 2~3초 텀 두기 -- 해결
         lives--;
         if (!lives) {
           stageTransition("Game Over!!", true);
         } else {
           if (lives == 3) {
-            if(difficulty == 3)
-              resetBrick(0);
+            if (difficulty == 2) resetBrick(2);
+            if (difficulty == 3) resetBrick(0);
             stageTransition("Game Start!!", false);
           } else {
             stageTransition("Try Again!!", false);
@@ -402,20 +452,24 @@ function playGame() {
       }
     }
 
-    if(difficulty == 3){
-      if(rndcnt > 600-(100*stage)){//블록 생성 주기 변경
+    if (difficulty == 3) {
+      if (rndcnt > 600 - 100 * stage) {
+        //블록 생성 주기 변경
         rndcnt = 0;
         var newMoveBrick_c = Math.floor(Math.random() * brickColumn);
         var newMoveBrick_r = Math.floor(Math.random() * brickRow);
-        while(brick[newMoveBrick_c][newMoveBrick_r].status == 3){
+        while (brick[newMoveBrick_c][newMoveBrick_r].status == 3) {
           newMoveBrick_c = Math.floor(Math.random() * brickColumn);
           newMoveBrick_r = Math.floor(Math.random() * brickRow);
         }
-        const code = Math.random() < 0.5 ?GetRandomCode() : null;
-        brick[newMoveBrick_c][newMoveBrick_r] = 
-        { x: newMoveBrick_r * (brickWidth + brickPadding) + brickOffsetLeft, y: brickOffsetTop, status: 3, code: code};
+        const code = Math.random() < 0.5 ? GetRandomCode() : null;
+        brick[newMoveBrick_c][newMoveBrick_r] = {
+          x: newMoveBrick_r * (brickWidth + brickPadding) + brickOffsetLeft,
+          y: brickOffsetTop,
+          status: 3,
+          code: code,
+        };
       }
-      
     }
 
     x += dx;
@@ -423,15 +477,6 @@ function playGame() {
   }
 
   gameInterval = setInterval(gameDraw, 10);
-
-function changeBallColor() {
-  const colors = ['red', 'blue', 'pink', 'green', 'purple']; //바뀔 색깔들
-  return colors[Math.floor(Math.random() * colors.length)];
-}
-function changePaddleColor() {
-  const colors = ['red', 'blue', 'pink', 'green', 'purple'];
-  return colors[Math.floor(Math.random() * colors.length)];
-}
 
   function drawBall() {
     context.beginPath();
@@ -453,84 +498,140 @@ function changePaddleColor() {
       direct[Math.floor(Math.random() * 2)];
     dy = 0.3 * difficulty * speed[stage - 1] * direct[1];
   }
-  
+
   function drawBrick() {
     for (var c = 0; c < brickColumn; c++) {
       for (var r = 0; r < brickRow; r++) {
+        // console.log(brick[c][r].status);
         if (brick[c][r].status == 1) {
           var brickX = brick[c][r].x;
           var brickY = brick[c][r].y;
 
-          
           context.beginPath();
           context.rect(brickX, brickY, brickWidth, brickHeight);
           context.fillStyle = gameColor; // 블록 색깔 바꾸는 코드 이용해서 바꾸기
           context.fill();
           context.closePath();
+        }
 
-          if (brick[c][r].code) {
-            context.font = "12px Arial"; //글자체
-            context.fillStyle = "red"; // 색깔
-            
-            // 한 줄에 출력할 최대 글자 수 설정
-            let maxChar = 13;
-            let text = brick[c][r].code;
-            let lines = [];
-            
-            // 텍스트가 너무 길어서 나누기
-            for (let i = 0; i < text.length; i += maxChar) {
-              lines.push(text.substring(i, i + maxChar));
+        if (difficulty == 2) {
+          var mostLeftRow = getMostLeftRow();
+          var mostRightRow = getMostRightRow();
+
+          // 블록 좌우 이동 방향 설정
+          if (brick[c][mostLeftRow].x <= 0) brickXDirect = 1;
+          if (brick[c][mostRightRow].x + brickWidth >= canvas.width) {
+            brickXDirect = -1;
+          }
+          // 모든 좌우 블록 이동
+          brick[c][r].x += 0.2 * brickXDirect * stage;
+
+          if (stage == 3) {
+            //상하로도 이동
+            var mostTopRow = getMostTopRow();
+            var mostBottomRow = getMostBottomRow();
+            // 블록 상하 이동 방향 설정
+            if (brick[mostTopRow][r].y <= 0) brickYDirect = 1;
+            if (
+              brick[mostBottomRow][r].y + brickHeight >=
+              canvas.height - 350
+            ) {
+              brickYDirect = -1;
             }
-          
-            // 텍스트의 Y 시작 위치 계산 (벽돌의 중앙에서 약간 위로)
-            let textY = brickY + (brickHeight - (lines.length * 12)) / 2 + 10; // 12는 폰트 크기, 10은 좀 더 보기 좋게
-          
-            for (let i = 0; i < lines.length; i++) {
-              let textWidth = context.measureText(lines[i]).width;
-              let textX = brickX + (brickWidth - textWidth) / 2;
-              context.fillText(lines[i], textX, textY);
-              textY += 12; // 폰트 크기만큼 Y 위치 증가
-            }
+            brick[c][r].y += 0.2 * brickYDirect * stage;
+          }
+
+          if (brick[c][r].status == 2) {
+            var brickX = brick[c][r].x;
+            var brickY = brick[c][r].y;
+
+            context.beginPath();
+            context.rect(brickX, brickY, brickWidth, brickHeight);
+            context.fillStyle = gameColor; // 블록 색깔 바꾸는 코드 이용해서 바꾸기
+            context.fill();
+            context.closePath();
           }
         }
-        if(difficulty == 3 && brick[c][r].status == 3){
-          brick[c][r].y+=0.2*stage;//공 떨어지는 속도 조절
+
+        if (difficulty == 3 && brick[c][r].status == 3) {
+          brick[c][r].y += 0.2 * stage; //공 떨어지는 속도 조절
           var brickX = brick[c][r].x;
           var brickY = brick[c][r].y;
-          
+
           context.beginPath();
           context.rect(brickX, brickY, brickWidth, brickHeight);
           context.fillStyle = gameColor; // 블록 색깔 바꾸는 코드 이용해서 바꾸기
           context.fill();
           context.closePath();
+        }
 
-          if (brick[c][r].code) {
-            context.font = "12px Arial"; //글자체
-            context.fillStyle = "red"; // 색깔
-            
-            // 한 줄에 출력할 최대 글자 수 설정
-            let maxChar = 13;
-            let text = brick[c][r].code;
-            let lines = [];
-            
-            // 텍스트가 너무 길어서 나누기
-            for (let i = 0; i < text.length; i += maxChar) {
-              lines.push(text.substring(i, i + maxChar));
-            }
-          
-            // 텍스트의 Y 시작 위치 계산 (벽돌의 중앙에서 약간 위로)
-            let textY = brickY + (brickHeight - (lines.length * 12)) / 2 + 10; // 12는 폰트 크기, 10은 좀 더 보기 좋게
-          
-            for (let i = 0; i < lines.length; i++) {
-              let textWidth = context.measureText(lines[i]).width;
-              let textX = brickX + (brickWidth - textWidth) / 2;
-              context.fillText(lines[i], textX, textY);
-              textY += 12; // 폰트 크기만큼 Y 위치 증가
-            }
+        if (brick[c][r].status != 0 && brick[c][r].code) {
+          context.font = "12px 'Source Code Pro'";
+          context.fillStyle = brickTextColor; // 색깔
+
+          // 한 줄에 출력할 최대 글자 수 설정
+          let maxChar = 10;
+          let text = brick[c][r].code;
+          let lines = [];
+
+          // 텍스트가 너무 길어서 나누기
+          for (let i = 0; i < text.length; i += maxChar) {
+            lines.push(text.substring(i, i + maxChar));
+          }
+
+          // 텍스트의 Y 시작 위치 계산 (벽돌의 중앙에서 약간 위로)
+          let textY = brickY + (brickHeight - lines.length * 12) / 2 + 10; // 12는 폰트 크기, 10은 좀 더 보기 좋게
+
+          for (let i = 0; i < lines.length; i++) {
+            let textWidth = context.measureText(lines[i]).width;
+            let textX = brickX + (brickWidth - textWidth) / 2;
+            context.fillText(lines[i], textX, textY);
+            textY += 12; // 폰트 크기만큼 Y 위치 증가
           }
         }
-        
-        
+      }
+    }
+
+    function getMostRightRow() {
+      for (var mostRightRow = brickRow - 1; mostRightRow >= 0; mostRightRow--) {
+        for (var c = 0; c < brickColumn; c++) {
+          console.log(brick[c][mostRightRow].status);
+          if (brick[c][mostRightRow].status != 0) {
+            return mostRightRow;
+          }
+        }
+      }
+    }
+    function getMostLeftRow() {
+      for (var mostLeftRow = 0; mostLeftRow < brickRow; mostLeftRow++) {
+        for (var c = 0; c < brickColumn; c++) {
+          console.log(brick[c][mostLeftRow].status);
+          if (brick[c][mostLeftRow].status != 0) {
+            return mostLeftRow;
+          }
+        }
+      }
+    }
+    function getMostTopRow() {
+      for (var r = 0; r < brickRow; r++) {
+        for (var mostTopRow = 0; mostTopRow < brickColumn; mostTopRow++) {
+          if (brick[mostTopRow][r].status != 0) {
+            return mostTopRow;
+          }
+        }
+      }
+    }
+    function getMostBottomRow() {
+      for (var r = 0; r < brickRow; r++) {
+        for (
+          var mostBottomRow = brickColumn - 1;
+          mostBottomRow >= 0;
+          mostBottomRow--
+        ) {
+          if (brick[mostBottomRow][r].status != 0) {
+            return mostBottomRow;
+          }
+        }
       }
     }
   }
@@ -556,25 +657,26 @@ function changePaddleColor() {
             } else {
               dy *= -1;
             }
-            if(b.code){ //코드 실행
+            if (b.code) {
+              //코드 실행
               eval(b.code);
             }
 
             b.status = 0;
-            score += 100;
+            score += b.code ? 200 : 100;
             document.getElementById("side-score").innerHTML = score;
 
             checkStage();
           }
-          if(b.y > canvasHeight){
+          if (b.y > canvasHeight) {
             b.status = 0;
             lives--;
             if (!lives) {
               stageTransition("Game Over!!", true);
             } else {
               if (lives == 3) {
-                if(difficulty == 3)
-                  resetBrick(0);
+                if (difficulty == 2) resetBrick(2);
+                if (difficulty == 3) resetBrick(0);
                 stageTransition("Game Start!!", false);
               } else {
                 stageTransition("Try Again!!", false);
@@ -583,8 +685,6 @@ function changePaddleColor() {
             updateLives();
             updateStage();
           }
-            
-            
         }
       }
     }
@@ -597,15 +697,18 @@ function changePaddleColor() {
       if (stage < 3) {
         stage++;
         stageTransition("Go To Next Stage!");
-        if(difficulty == 3){
+        if (difficulty == 2) {
+          resetBrick(2);
+        } else if (difficulty == 3) {
           resetBrick(0);
-        }else{
+        } else {
           resetBrick(1);
         }
       } else {
         if (difficulty < 3) {
           difficulty++;
           stage = 1;
+          lives = 3;
           stageTransition("You Win!! Go To Next Level!!");
         } else {
           stageTransition("Congratulation!!! You Win This Game!!!", true);
