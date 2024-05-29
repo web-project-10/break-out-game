@@ -112,7 +112,7 @@ function selectSetting(setWhat) {
       Default: {
         backgroundColor: "#233239",
         elements: {
-          "#code-line-num, #user-setting, #dif-setting": {
+          "#code-line-num, #user-setting, #dif-setting, footer": {
             "background-color": "#1D2A30",
             color: "#98A1AB",
           },
@@ -120,11 +120,13 @@ function selectSetting(setWhat) {
             { color: "#98A1AB" },
           "#side-setting": { color: "#56AFCE" },
         },
+        src1: "./assets/folder1_default.png",
+        src2: "./assets/folder2_default.png",
       },
       Butterfly: {
         backgroundColor: "#FFFFFF",
         elements: {
-          "#code-line-num, #user-setting, #dif-setting": {
+          "#code-line-num, #user-setting, #dif-setting, footer": {
             "background-color": "#EAF0F8",
             color: "#434343",
           },
@@ -132,11 +134,13 @@ function selectSetting(setWhat) {
             { color: "#434343" },
           "#side-setting": { color: "#56AFCE" },
         },
+        src1: "./assets/folder1_butterfly.png",
+        src2: "./assets/folder2_butterfly.png",
       },
       Dracula: {
         backgroundColor: "#282A36",
         elements: {
-          "#code-line-num, #user-setting, #dif-setting": {
+          "#code-line-num, #user-setting, #dif-setting, footer": {
             "background-color": "#3A3933",
             color: "#C7C5D6",
           },
@@ -144,15 +148,18 @@ function selectSetting(setWhat) {
             { color: "#C7C5D6" },
           "#side-setting": { color: "#56AFCE" },
         },
+        src1: "./assets/folder1_dracula.png",
+        src2: "./assets/folder2_dracula.png",
       },
     };
 
     $("input[name=theme-btn]").change(function () {
       const theme = $(this).val();
-      const { backgroundColor, elements } = themeStyles[theme];
+      const { backgroundColor, elements, src1,  src2} = themeStyles[theme];
 
       $("#content").css("background-color", backgroundColor);
-
+      $(".folder1").attr("src", src1);
+      $(".folder2").attr("src", src2);
       for (const selector in elements) {
         $(selector).css(elements[selector]);
       }
@@ -294,23 +301,59 @@ function playGame() {
   let dy = 0.3 * difficulty * speed[stage - 1] * direct[1];
 
   var brick = [];
-  var brickColumn = 4;
-  var brickRow = 10;
-  var brickWidth = canvas.width / 15;
-  var brickHeight = brickWidth / 2;
+  var brickColumn = 7;
+  var brickRow = 8;
+  var brickWidth = canvas.width / 12;
+  var brickHeight = brickWidth / 4;
   var brickPadding = (brickWidth * 3) / 10;
+  var ballColor = "#71929d";/////// 공 기본 색
+  var paddleColor = gameColor;/////// 패들 기본 색
+  var brickOffsetLeft =
+          (canvasWidth -
+            brickWidth * brickRow -
+            brickPadding * (brickRow - 1)) /
+          2;
+  var brickOffsetTop = 50;
 
-  for (var c = 0; c < brickColumn; c++) {
-    brick[c] = [];
-    for (var r = 0; r < brickRow; r++) {
-      brick[c][r] = { x: 0, y: 0, status: 1 };
+
+  function resetBrick(state){
+    for (var c = 0; c < brickColumn; c++) {
+      brick[c] = [];
+      for (var r = 0; r < brickRow; r++) {
+        const code = Math.random() < 0.5 ?GetRandomCode() : null;
+        brick[c][r] = { x: r * (brickWidth + brickPadding) + brickOffsetLeft, y: c * (brickHeight + brickPadding) + brickOffsetTop, status: state, code: code}; 
+      }
     }
   }
 
+  resetBrick(1);
   var paddleWidth = 100;
   var paddleHeight = 10;
   var paddleX = (canvasWidth - paddleWidth) / 2;
   var paddleY = canvasHeight - paddleHeight - 10;
+  var rndcnt = 500;
+
+  function GetRandomCode() {
+    const codes = [//여기에 코드 추가하시면 됩니다. // 테스트용으로 여러개 넣어봤음.
+        "$('body').css('background-color', 'blue');",
+        "$('canvas').css('border', '5px solid red');",
+        "ballColor = changeBallColor();",
+        "ballColor = changeBallColor();",
+        "ballColor = changeBallColor();",
+        "ballColor = changeBallColor();",
+        "ballColor = changeBallColor();",
+        "ballColor = changeBallColor();",
+        "ballColor = changeBallColor();",
+        "paddleColor = changePaddleColor();",
+        "paddleColor = changePaddleColor();",
+        "paddleColor = changePaddleColor();",
+        "paddleColor = changePaddleColor();",
+        "paddleColor = changePaddleColor();",
+        "paddleColor = changePaddleColor();",
+        "paddleColor = changePaddleColor();"
+    ];
+    return codes[Math.floor(Math.random() * codes.length)]; //여기서 length값 조절해서 모드에 따라 나올 함수 조절 가능.
+  }
 
   function gameDraw() {
     context.clearRect(0, 0, canvas.width, canvas.height);
@@ -320,15 +363,26 @@ function playGame() {
     drawPaddle();
     updateLives();
     updateStage();
-
+    rndcnt++;
     if (x < circleRadius || x > canvasWidth - circleRadius) {
       dx *= -1;
     }
     if (y < circleRadius) {
       dy *= -1;
     } else if (y > canvasHeight - 20 - circleRadius) {
-      if (x > paddleX && x < paddleX + paddleWidth) {
-        dy *= -1;
+      if (x > paddleX && x < paddleX + paddleWidth) { 
+        // 패들 중심으로부터의 거리 계산
+        let paddleCenter = paddleX + paddleWidth / 2;
+        let hitPosition = x - paddleCenter;
+      
+        // 너무 낮은 각도로 되면 안되니 45도 제한
+        let maxAngle = Math.PI / 4;
+        let angle = (hitPosition / (paddleWidth / 2)) * maxAngle;
+      
+        // 각도에 따른 공의 속도 설정
+        let speed = Math.sqrt(dx * dx + dy * dy);
+        dx = speed * Math.sin(angle);
+        dy = -speed * Math.cos(angle);
       } else {
         //TODO 목숨 하나 잃었다는 알림 띄우고 다시 공 출발할 떄까지 2~3초 텀 두기 -- 해결
         lives--;
@@ -336,6 +390,8 @@ function playGame() {
           stageTransition("Game Over!!", true);
         } else {
           if (lives == 3) {
+            if(difficulty == 3)
+              resetBrick(0);
             stageTransition("Game Start!!", false);
           } else {
             stageTransition("Try Again!!", false);
@@ -346,18 +402,43 @@ function playGame() {
       }
     }
 
+    if(difficulty == 3){
+      if(rndcnt > 600-(100*stage)){//블록 생성 주기 변경
+        rndcnt = 0;
+        var newMoveBrick_c = Math.floor(Math.random() * brickColumn);
+        var newMoveBrick_r = Math.floor(Math.random() * brickRow);
+        while(brick[newMoveBrick_c][newMoveBrick_r].status == 3){
+          newMoveBrick_c = Math.floor(Math.random() * brickColumn);
+          newMoveBrick_r = Math.floor(Math.random() * brickRow);
+        }
+        const code = Math.random() < 0.5 ?GetRandomCode() : null;
+        brick[newMoveBrick_c][newMoveBrick_r] = 
+        { x: newMoveBrick_r * (brickWidth + brickPadding) + brickOffsetLeft, y: brickOffsetTop, status: 3, code: code};
+      }
+      
+    }
+
     x += dx;
     y += dy;
   }
 
   gameInterval = setInterval(gameDraw, 10);
 
+function changeBallColor() {
+  const colors = ['red', 'blue', 'pink', 'green', 'purple']; //바뀔 색깔들
+  return colors[Math.floor(Math.random() * colors.length)];
+}
+function changePaddleColor() {
+  const colors = ['red', 'blue', 'pink', 'green', 'purple'];
+  return colors[Math.floor(Math.random() * colors.length)];
+}
+
   function drawBall() {
     context.beginPath();
     ballShape == BallShape.CIRCLE
       ? context.arc(x, y, circleRadius, 0, 2.0 * Math.PI, true)
       : context.rect(x, y, rectWidth, rectWidth);
-    context.fillStyle = "#71929d"; // 공 색깔 바꾸는 코드 이용해서 바꾸기
+    context.fillStyle = ballColor; // 공 색깔 바꾸는 코드 이용해서 바꾸기
     context.fill();
     context.closePath();
   }
@@ -372,30 +453,84 @@ function playGame() {
       direct[Math.floor(Math.random() * 2)];
     dy = 0.3 * difficulty * speed[stage - 1] * direct[1];
   }
-
+  
   function drawBrick() {
     for (var c = 0; c < brickColumn; c++) {
       for (var r = 0; r < brickRow; r++) {
-        var brickOffsetLeft =
-          (canvasWidth -
-            brickWidth * brickRow -
-            brickPadding * (brickRow - 1)) /
-          2;
-        var brickOffsetTop = 50;
-
         if (brick[c][r].status == 1) {
-          var brickX = r * (brickWidth + brickPadding) + brickOffsetLeft;
-          var brickY = c * (brickHeight + brickPadding) + brickOffsetTop;
+          var brickX = brick[c][r].x;
+          var brickY = brick[c][r].y;
 
-          brick[c][r].x = brickX;
-          brick[c][r].y = brickY;
-
+          
           context.beginPath();
           context.rect(brickX, brickY, brickWidth, brickHeight);
           context.fillStyle = gameColor; // 블록 색깔 바꾸는 코드 이용해서 바꾸기
           context.fill();
           context.closePath();
+
+          if (brick[c][r].code) {
+            context.font = "12px Arial"; //글자체
+            context.fillStyle = "red"; // 색깔
+            
+            // 한 줄에 출력할 최대 글자 수 설정
+            let maxChar = 13;
+            let text = brick[c][r].code;
+            let lines = [];
+            
+            // 텍스트가 너무 길어서 나누기
+            for (let i = 0; i < text.length; i += maxChar) {
+              lines.push(text.substring(i, i + maxChar));
+            }
+          
+            // 텍스트의 Y 시작 위치 계산 (벽돌의 중앙에서 약간 위로)
+            let textY = brickY + (brickHeight - (lines.length * 12)) / 2 + 10; // 12는 폰트 크기, 10은 좀 더 보기 좋게
+          
+            for (let i = 0; i < lines.length; i++) {
+              let textWidth = context.measureText(lines[i]).width;
+              let textX = brickX + (brickWidth - textWidth) / 2;
+              context.fillText(lines[i], textX, textY);
+              textY += 12; // 폰트 크기만큼 Y 위치 증가
+            }
+          }
         }
+        if(difficulty == 3 && brick[c][r].status == 3){
+          brick[c][r].y+=0.2*stage;//공 떨어지는 속도 조절
+          var brickX = brick[c][r].x;
+          var brickY = brick[c][r].y;
+          
+          context.beginPath();
+          context.rect(brickX, brickY, brickWidth, brickHeight);
+          context.fillStyle = gameColor; // 블록 색깔 바꾸는 코드 이용해서 바꾸기
+          context.fill();
+          context.closePath();
+
+          if (brick[c][r].code) {
+            context.font = "12px Arial"; //글자체
+            context.fillStyle = "red"; // 색깔
+            
+            // 한 줄에 출력할 최대 글자 수 설정
+            let maxChar = 13;
+            let text = brick[c][r].code;
+            let lines = [];
+            
+            // 텍스트가 너무 길어서 나누기
+            for (let i = 0; i < text.length; i += maxChar) {
+              lines.push(text.substring(i, i + maxChar));
+            }
+          
+            // 텍스트의 Y 시작 위치 계산 (벽돌의 중앙에서 약간 위로)
+            let textY = brickY + (brickHeight - (lines.length * 12)) / 2 + 10; // 12는 폰트 크기, 10은 좀 더 보기 좋게
+          
+            for (let i = 0; i < lines.length; i++) {
+              let textWidth = context.measureText(lines[i]).width;
+              let textX = brickX + (brickWidth - textWidth) / 2;
+              context.fillText(lines[i], textX, textY);
+              textY += 12; // 폰트 크기만큼 Y 위치 증가
+            }
+          }
+        }
+        
+        
       }
     }
   }
@@ -404,7 +539,7 @@ function playGame() {
     for (var c = 0; c < brickColumn; c++) {
       for (var r = 0; r < brickRow; r++) {
         var b = brick[c][r];
-        if (b.status == 1) {
+        if (b.status != 0) {
           if (
             x > b.x &&
             x < b.x + brickWidth &&
@@ -421,6 +556,9 @@ function playGame() {
             } else {
               dy *= -1;
             }
+            if(b.code){ //코드 실행
+              eval(b.code);
+            }
 
             b.status = 0;
             score += 100;
@@ -428,6 +566,25 @@ function playGame() {
 
             checkStage();
           }
+          if(b.y > canvasHeight){
+            b.status = 0;
+            lives--;
+            if (!lives) {
+              stageTransition("Game Over!!", true);
+            } else {
+              if (lives == 3) {
+                if(difficulty == 3)
+                  resetBrick(0);
+                stageTransition("Game Start!!", false);
+              } else {
+                stageTransition("Try Again!!", false);
+              }
+            }
+            updateLives();
+            updateStage();
+          }
+            
+            
         }
       }
     }
@@ -440,6 +597,11 @@ function playGame() {
       if (stage < 3) {
         stage++;
         stageTransition("Go To Next Stage!");
+        if(difficulty == 3){
+          resetBrick(0);
+        }else{
+          resetBrick(1);
+        }
       } else {
         if (difficulty < 3) {
           difficulty++;
@@ -501,7 +663,7 @@ function playGame() {
   function drawPaddle() {
     context.beginPath();
     context.rect(paddleX, paddleY, paddleWidth, paddleHeight);
-    context.fillStyle = gameColor; // 패드 색깔 바꾸는 코드 이용해서 바꾸기
+    context.fillStyle = paddleColor; // 패드 색깔 바꾸는 코드 이용해서 바꾸기
     context.fill();
     context.closePath();
   }
