@@ -355,7 +355,8 @@ function playGame() {
   var paddleX = (canvasWidth - paddleWidth) / 2;
   var paddleY = canvasHeight - paddleHeight - 10;
   var rndcnt = 500;
-  var brickDirect = direct[Math.floor(Math.random() * 2)];
+  var brickXDirect = direct[Math.floor(Math.random() * 2)];
+  var brickYDirect = direct[Math.floor(Math.random() * 2)];
 
   function GetRandomCode() {
     const codes = [
@@ -365,18 +366,25 @@ function playGame() {
       // "break5Blocks();",
       // "add5Blocks();",
       // "toNextStage();",
-      // "reset();"
     ];
     return codes[Math.floor(Math.random() * codes.length)]; //여기서 length값 조절해서 모드에 따라 나올 함수 조절 가능.
   }
 
   function randomBallColor() {
     const colors = ["red", "blue", "pink", "green", "purple"]; //바뀔 색깔들
-    ballColor = colors[Math.floor(Math.random() * colors.length)];
+    newColor = colors[Math.floor(Math.random() * colors.length)];
+    while (ballColor == newColor) {
+      newColor = colors[Math.floor(Math.random() * colors.length)];
+    }
+    ballColor = newColor;
   }
   function randomPaddleColor() {
     const colors = ["red", "blue", "pink", "green", "purple"];
-    paddleColor = colors[Math.floor(Math.random() * colors.length)];
+    newPaddleColor = colors[Math.floor(Math.random() * colors.length)];
+    while (paddleColor == newPaddleColor) {
+      newPaddleColor = colors[Math.floor(Math.random() * colors.length)];
+    }
+    paddleColor = newPaddleColor;
   }
 
   function gameDraw() {
@@ -492,16 +500,30 @@ function playGame() {
         if (difficulty == 2) {
           var mostLeftRow = getMostLeftRow();
           var mostRightRow = getMostRightRow();
-          console.log(mostLeftRow, mostRightRow);
 
-          // 블록 이동 방향 설정
-          if (brick[c][mostLeftRow].x <= 0) brickDirect = 1;
+          // 블록 좌우 이동 방향 설정
+          if (brick[c][mostLeftRow].x <= 0) brickXDirect = 1;
           if (brick[c][mostRightRow].x + brickWidth >= canvas.width) {
-            brickDirect = -1;
+            brickXDirect = -1;
+          }
+          // 모든 좌우 블록 이동
+          brick[c][r].x += 0.2 * brickXDirect * stage;
+
+          if (stage == 3) {
+            //상하로도 이동
+            var mostTopRow = getMostTopRow();
+            var mostBottomRow = getMostBottomRow();
+            // 블록 상하 이동 방향 설정
+            if (brick[mostTopRow][r].y <= 0) brickYDirect = 1;
+            if (
+              brick[mostBottomRow][r].y + brickHeight >=
+              canvas.height - 350
+            ) {
+              brickYDirect = -1;
+            }
+            brick[c][r].y += 0.2 * brickYDirect * stage;
           }
 
-          // 모든 블록 이동
-          brick[c][r].x += 0.2 * brickDirect * stage;
           if (brick[c][r].status == 2) {
             var brickX = brick[c][r].x;
             var brickY = brick[c][r].y;
@@ -554,7 +576,6 @@ function playGame() {
     }
 
     function getMostRightRow() {
-      console.log("!!!!!!!!!!!!!!!!!!getMostRightRow!!!!!!!!!!!!!!!!!!");
       for (var mostRightRow = brickRow - 1; mostRightRow >= 0; mostRightRow--) {
         for (var c = 0; c < brickColumn; c++) {
           console.log(brick[c][mostRightRow].status);
@@ -564,14 +585,34 @@ function playGame() {
         }
       }
     }
-
     function getMostLeftRow() {
-      console.log("!!!!!!!!!!!!!!!!!!getMostLeftRow!!!!!!!!!!!!!!!!!!");
       for (var mostLeftRow = 0; mostLeftRow < brickRow; mostLeftRow++) {
         for (var c = 0; c < brickColumn; c++) {
           console.log(brick[c][mostLeftRow].status);
           if (brick[c][mostLeftRow].status != 0) {
             return mostLeftRow;
+          }
+        }
+      }
+    }
+    function getMostTopRow() {
+      for (var r = 0; r < brickRow; r++) {
+        for (var mostTopRow = 0; mostTopRow < brickColumn; mostTopRow++) {
+          if (brick[mostTopRow][r].status != 0) {
+            return mostTopRow;
+          }
+        }
+      }
+    }
+    function getMostBottomRow() {
+      for (var r = 0; r < brickRow; r++) {
+        for (
+          var mostBottomRow = brickColumn - 1;
+          mostBottomRow >= 0;
+          mostBottomRow--
+        ) {
+          if (brick[mostBottomRow][r].status != 0) {
+            return mostBottomRow;
           }
         }
       }
