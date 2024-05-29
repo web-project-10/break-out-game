@@ -41,6 +41,7 @@ function pageLoad() {
       brickTextColor = "#3A3933";
     }
   });
+  
 }
 
 let difficulty; // 난이도 별로 숫자로 관리. normal = 1, hard = 2, extreme = 3
@@ -275,7 +276,7 @@ let gameInterval;
 let transitionTimeout;
 const scoreStandard = {
   1: [300, 600, 1000],
-  2: [1000, 2500, 7000],
+  2: [1000, 2000, 3000],
   3: [1000, 2000, 3000],
 };
 
@@ -302,7 +303,7 @@ function playGame() {
   canvas.width = canvasWidth;
   canvas.height = canvasHeight;
 
-  const circleRadius = 3;
+  const circleRadius = 5;
   const rectWidth = circleRadius * 2;
 
   let x = canvasWidth;
@@ -310,8 +311,8 @@ function playGame() {
 
   const direct = [1, -1];
   let dx =
-    10 * difficulty * speed[stage - 1] * direct[Math.floor(Math.random() * 2)];
-  let dy = 10 * difficulty * speed[stage - 1] * direct[1];
+    5 * difficulty * speed[stage - 1] * direct[Math.floor(Math.random() * 2)];
+  let dy = 5 * difficulty * speed[stage - 1] * direct[1];
 
   var brick = [];
   var brickColumn = 6;
@@ -376,8 +377,8 @@ function playGame() {
     "blue",
     "pink",
     "green",
-    "purple",
-    "lightgray",
+    //"purple",
+    //"lightgray",
     "aqua",
     "aquamarines",
     "salmon",
@@ -386,7 +387,7 @@ function playGame() {
     "orange",
     "yellow",
     "peachpuff",
-    "slategray",
+    //"slategray",
     "darkolivegreen",
   ];
   function randomBallColor() {
@@ -453,7 +454,7 @@ function playGame() {
     }
 
     if (difficulty == 3) {
-      if (rndcnt > 600 - 100 * stage) {
+      if (rndcnt > 600 - 150 * stage) {
         //블록 생성 주기 변경
         rndcnt = 0;
         var newMoveBrick_c = Math.floor(Math.random() * brickColumn);
@@ -661,24 +662,27 @@ function playGame() {
               //코드 실행
               eval(b.code);
             }
-
+            var brick_audio = new Audio("./assets/one_beep.mp3");
+            brick_audio.loop = false;
+            brick_audio.play();
             b.status = 0;
             score += b.code ? 200 : 100;
             document.getElementById("side-score").innerHTML = score;
 
             checkStage();
           }
-          if (b.y > canvasHeight) {
+          if (b.y > canvasHeight && difficulty == 3) {
             b.status = 0;
             lives--;
             if (!lives) {
               stageTransition("Game Over!!", true);
             } else {
               if (lives == 3) {
-                if (difficulty == 2) resetBrick(2);
+                //if (difficulty == 2) resetBrick(2);
                 if (difficulty == 3) resetBrick(0);
                 stageTransition("Game Start!!", false);
               } else {
+                if (difficulty == 3) resetBrick(0);
                 stageTransition("Try Again!!", false);
               }
             }
@@ -710,12 +714,27 @@ function playGame() {
           stage = 1;
           lives = 3;
           stageTransition("You Win!! Go To Next Level!!");
+          if (difficulty == 2) {
+            resetBrick(2);
+          } else if (difficulty == 3) {
+            resetBrick(0);
+          } else {
+            resetBrick(1);
+          }
         } else {
           stageTransition("Congratulation!!! You Win This Game!!!", true);
         }
       }
     }
   }
+  $(document).keydown(function(event) {
+    if (event.which == 71) {
+      score = 10000;
+      document.getElementById("side-score").innerHTML = score;
+      stageTransition("Caht-GPT의 힘을 빌릴수밖에....!", false)
+      //checkStage();
+    }
+  });
 
   function stageTransition(message, resetGame = false) {
     clearInterval(gameInterval);
