@@ -403,7 +403,6 @@ function playGame() {
     }
     paddleColor = newPaddleColor;
   }
-  function crashThisLine() {}
 
   function gameDraw() {
     context.clearRect(0, 0, canvas.width, canvas.height);
