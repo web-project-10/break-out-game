@@ -366,12 +366,30 @@ function playGame() {
       // "break5Blocks();",
       // "add5Blocks();",
       // "toNextStage();",
+      // "crashThisLine();"
     ];
     return codes[Math.floor(Math.random() * codes.length)]; //여기서 length값 조절해서 모드에 따라 나올 함수 조절 가능.
   }
 
+  const colors = [
+    "red",
+    "blue",
+    "pink",
+    "green",
+    "purple",
+    "lightgray",
+    "aqua",
+    "aquamarines",
+    "salmon",
+    "skyblue",
+    "darkcyan",
+    "orange",
+    "yellow",
+    "peachpuff",
+    "slategray",
+    "darkolivegreen",
+  ];
   function randomBallColor() {
-    const colors = ["red", "blue", "pink", "green", "purple"]; //바뀔 색깔들
     newColor = colors[Math.floor(Math.random() * colors.length)];
     while (ballColor == newColor) {
       newColor = colors[Math.floor(Math.random() * colors.length)];
@@ -379,13 +397,13 @@ function playGame() {
     ballColor = newColor;
   }
   function randomPaddleColor() {
-    const colors = ["red", "blue", "pink", "green", "purple"];
     newPaddleColor = colors[Math.floor(Math.random() * colors.length)];
     while (paddleColor == newPaddleColor) {
       newPaddleColor = colors[Math.floor(Math.random() * colors.length)];
     }
     paddleColor = newPaddleColor;
   }
+  function crashThisLine() {}
 
   function gameDraw() {
     context.clearRect(0, 0, canvas.width, canvas.height);
