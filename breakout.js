@@ -737,7 +737,7 @@ function playGame() {
     if ((event.which == 71 || event.which == 80 || event.which == 84) && transition_flag!=1) {
       score += 10000;
       document.getElementById("side-score").innerHTML = score;
-      stageTransition("Caht-GPT의 힘을 빌릴수밖에....!", false)
+      stageTransition("Chat-GPT의 힘을 빌릴수밖에....!", false)
       //checkStage();
     }
   });
